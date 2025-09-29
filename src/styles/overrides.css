@@ -1,0 +1,47 @@
+/* overrides.css */
+/* 覆盖所有Tailwind的圆角类 */
+.rounded,
+.rounded-sm,
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full,
+[class*="rounded-t-"],
+[class*="rounded-r-"],
+[class*="rounded-b-"],
+[class*="rounded-l-"],
+[class*="rounded-tl-"],
+[class*="rounded-tr-"],
+[class*="rounded-br-"],
+[class*="rounded-bl-"] {
+  border-radius: 0 !important;
+}
+
+/* 覆盖滑块的圆角 */
+input[type="range"]::-webkit-slider-thumb {
+  border-radius: 0 !important;
+}
+
+input[type="range"]::-moz-range-thumb {
+  border-radius: 0 !important;
+}
+
+/* 覆盖focus ring的圆角 */
+*:focus {
+  border-radius: 0 !important;
+}
+
+/* 覆盖按钮和输入框的圆角 */
+button,
+input,
+select,
+textarea {
+  border-radius: 0 !important;
+}
+
+/* 确保高优先级 */
+*[class*="rounded"] {
+  border-radius: 0 !important;
+} 

@@ -1,0 +1,260 @@
+/* ThemeSwitch.module.css */
+.themeSwitch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.themeSwitch:hover {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.switchLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.switchToggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+}
+
+.switchToggle.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: #3b82f6;
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.switchToggle.active .switchThumb {
+  transform: translateX(20px);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+.themeIcon {
+  transition: all 0.2s ease;
+}
+
+.themeIcon.sun {
+  color: #f59e0b;
+}
+
+.themeIcon.moon {
+  color: #f59e0b;
+}
+
+.switchInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switchInput:focus + .switchToggle {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.themeIndicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.themeIndicator.light::before {
+  content: '☀️';
+  font-size: 12px;
+}
+
+.themeIndicator.dark::before {
+  content: '🌙';
+  font-size: 12px;
+}
+
+.switchContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.switchContainer:hover {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: #cbd5e1;
+}
+
+.switchTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  flex: 1;
+}
+
+.switchDescription {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.compactSwitch {
+  padding: 6px 8px;
+  border-radius: 8px;
+  min-width: auto;
+}
+
+.compactSwitch .switchLabel {
+  display: none;
+}
+
+.compactSwitch .switchToggle {
+  width: 36px;
+  height: 20px;
+}
+
+.compactSwitch .switchThumb {
+  width: 14px;
+  height: 14px;
+  font-size: 8px;
+}
+
+.compactSwitch .switchToggle.active .switchThumb {
+  transform: translateX(16px);
+}
+
+.animatedSwitch {
+  overflow: hidden;
+}
+
+.animatedSwitch::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.animatedSwitch:hover::before {
+  left: 100%;
+}
+
+.switchGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(249, 250, 251, 0.8);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.switchGroup .switchTitle {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .themeSwitch {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(71, 85, 105, 0.8);
+}
+
+[data-theme="dark"] .themeSwitch:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: #64748b;
+}
+
+[data-theme="dark"] .switchLabel {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .switchToggle {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  border-color: #475569;
+}
+
+[data-theme="dark"] .switchToggle.active {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: #f59e0b;
+}
+
+[data-theme="dark"] .switchThumb {
+  background: #f1f5f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .switchToggle.active .switchThumb {
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+}
+
+[data-theme="dark"] .themeIndicator {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .switchContainer {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: #475569;
+}
+
+[data-theme="dark"] .switchContainer:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: #64748b;
+}
+
+[data-theme="dark"] .switchTitle {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .switchDescription {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .switchGroup {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: #475569;
+}
+
+[data-theme="dark"] .animatedSwitch::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
