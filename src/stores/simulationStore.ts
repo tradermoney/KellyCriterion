@@ -57,8 +57,81 @@ const defaultConfig: SimulationConfig = {
   paths: 1000,
   batchSize: 100,
   strategies: [
+    // 凯利公式策略
     {
       type: 'kelly'
+    },
+    // 分数凯利策略 - 保守版本
+    {
+      type: 'fractionalKelly',
+      params: {
+        alpha: 0.25
+      }
+    },
+    // 分数凯利策略 - 激进版本
+    {
+      type: 'fractionalKelly',
+      params: {
+        alpha: 0.75
+      }
+    },
+    // 固定比例策略 - 保守版本
+    {
+      type: 'fixedFraction',
+      params: {
+        fFixed: 0.05
+      }
+    },
+    // 固定比例策略 - 激进版本
+    {
+      type: 'fixedFraction',
+      params: {
+        fFixed: 0.15
+      }
+    },
+    // 固定注金策略 - 小额版本
+    {
+      type: 'fixedStake',
+      params: {
+        k: 5
+      }
+    },
+    // 固定注金策略 - 大额版本
+    {
+      type: 'fixedStake',
+      params: {
+        k: 15
+      }
+    },
+    // Paroli策略 - 保守版本
+    {
+      type: 'paroli',
+      params: {
+        base: 1,
+        r: 1.5
+      }
+    },
+    // Paroli策略 - 激进版本
+    {
+      type: 'paroli',
+      params: {
+        base: 2,
+        r: 2
+      }
+    },
+    // Martingale策略 - 保守版本
+    {
+      type: 'martingale',
+      params: {
+        base: 1
+      }
+    },
+    // Martingale策略 - 激进版本
+    {
+      type: 'martingale',
+      params: {
+        base: 3
+      }
     }
   ]
 };
