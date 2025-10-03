@@ -36,11 +36,11 @@ const StrategyItem: React.FC<{
   const strategyOption = STRATEGY_OPTIONS.find(opt => opt.value === strategy.type);
   
   return (
-    <div className="bg-white dark:bg-slate-700 rounded-md border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow-md transition-all duration-200 p-3">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2.5">
-          <div className={`w-8 h-8 rounded-md bg-gradient-to-br ${getColorClasses(strategyOption?.color || 'blue')} flex items-center justify-center shadow-md`}>
-            <span className="text-white text-sm">{strategyOption?.icon || '🎯'}</span>
+    <div className="bg-white dark:bg-slate-700 rounded-md border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow-md transition-all duration-200 p-2">
+      <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center gap-2">
+          <div className={`w-6 h-6 rounded-md bg-gradient-to-br ${getColorClasses(strategyOption?.color || 'blue')} flex items-center justify-center shadow-md`}>
+            <span className="text-white text-xs">{strategyOption?.icon || '🎯'}</span>
           </div>
           <div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">{strategyOption?.label || '未知策略'}</h4>
@@ -50,18 +50,18 @@ const StrategyItem: React.FC<{
         {canRemove && (
           <button
             onClick={onRemove}
-            className="w-6 h-6 text-slate-400 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 rounded-md flex items-center justify-center transition-all duration-200 opacity-60 hover:opacity-100"
+            className="w-5 h-5 text-slate-400 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 rounded-md flex items-center justify-center transition-all duration-200 opacity-60 hover:opacity-100"
           >
-            <X size={14} />
+            <X size={12} />
           </button>
         )}
       </div>
 
       {/* 分数凯利特有参数 */}
       {strategy.type === 'fractionalKelly' && (
-        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-3 space-y-2">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-2 space-y-1">
           <label className="block">
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 block">
               凯利分数 ({strategy.params?.alpha || 0.5})
             </span>
             <input
@@ -71,7 +71,7 @@ const StrategyItem: React.FC<{
               step="0.1"
               value={strategy.params?.alpha || 0.5}
               onChange={(e) => onUpdate({ ...strategy, params: { ...strategy.params, alpha: Number(e.target.value) } })}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-2 py-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
             />
           </label>
         </div>
@@ -79,9 +79,9 @@ const StrategyItem: React.FC<{
 
       {/* 固定比例特有参数 */}
       {strategy.type === 'fixedFraction' && (
-        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-3 space-y-2">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-2 space-y-1">
           <label className="block">
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 block">
               固定比例 ({((strategy.params?.fFixed || 0.1) * 100).toFixed(1)}%)
             </span>
             <input
@@ -91,7 +91,7 @@ const StrategyItem: React.FC<{
               step="0.01"
               value={strategy.params?.fFixed || 0.1}
               onChange={(e) => onUpdate({ ...strategy, params: { ...strategy.params, fFixed: Number(e.target.value) } })}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-2 py-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
             />
           </label>
         </div>
@@ -99,9 +99,9 @@ const StrategyItem: React.FC<{
 
       {/* 固定注金特有参数 */}
       {strategy.type === 'fixedStake' && (
-        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-3 space-y-2">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-md p-2 space-y-1">
           <label className="block">
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 block">
               固定注金 (¥{strategy.params?.base || 10})
             </span>
             <input
@@ -111,7 +111,7 @@ const StrategyItem: React.FC<{
               step="1"
               value={strategy.params?.base || 10}
               onChange={(e) => onUpdate({ ...strategy, params: { ...strategy.params, base: Number(e.target.value) } })}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-2 py-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
             />
           </label>
         </div>
@@ -153,7 +153,7 @@ export const StrategySelector: React.FC<StrategySelectorProps> = ({
   return (
     <div className="space-y-4">
       {/* 现有策略列表 */}
-      <div className="space-y-3">
+      <div className="space-y-2">
                  {strategies.map((strategy, index) => (
            <StrategyItem
              key={index}
