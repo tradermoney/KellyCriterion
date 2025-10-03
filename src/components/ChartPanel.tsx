@@ -3,6 +3,7 @@ import type { StrategySummary } from '../types/simulation';
 import { HelpTooltip } from './HelpTooltip';
 import { useLanguage } from '../contexts/LanguageContext';
 import { WealthCurveChart } from './WealthCurveChart';
+import { AllPerformanceCharts } from './AllPerformanceCharts';
 
 interface ChartPanelProps {
   summaries: StrategySummary[];
@@ -43,6 +44,9 @@ export const ChartPanel: React.FC<ChartPanelProps> = ({ summaries }) => {
           <WealthCurveChart summaries={summaries} height={300} />
         </div>
       </div>
+
+      {/* 所有29个策略绩效分析图表 */}
+      <AllPerformanceCharts summaries={summaries} />
     </div>
   );
 };

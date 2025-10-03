@@ -65,20 +65,50 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
 
   // 计算额外的统计指标
   const calculateAdditionalStats = (summary: StrategySummary) => {
-    const finalWealths = summary.paths.map(p => p.finalWealth);
+    if (!summary.paths || summary.paths.length === 0) {
+      return {
+        median: 0,
+        percentile25: 0,
+        percentile75: 0,
+        percentile5: 0,
+        percentile95: 0,
+        min: 0,
+        max: 0,
+        std: 0,
+        winCount: 0,
+        totalPaths: 0,
+      };
+    }
+
+    const finalWealths = summary.paths.map(p => p.finalWealth || 0).filter(w => !isNaN(w));
+    if (finalWealths.length === 0) {
+      return {
+        median: 0,
+        percentile25: 0,
+        percentile75: 0,
+        percentile5: 0,
+        percentile95: 0,
+        min: 0,
+        max: 0,
+        std: 0,
+        winCount: 0,
+        totalPaths: 0,
+      };
+    }
+
     const sorted = [...finalWealths].sort((a, b) => a - b);
-    
+
     return {
-      median: sorted[Math.floor(sorted.length / 2)],
-      percentile25: sorted[Math.floor(sorted.length * 0.25)],
-      percentile75: sorted[Math.floor(sorted.length * 0.75)],
-      percentile5: sorted[Math.floor(sorted.length * 0.05)],
-      percentile95: sorted[Math.floor(sorted.length * 0.95)],
-      min: Math.min(...finalWealths),
-      max: Math.max(...finalWealths),
-      std: Math.sqrt(summary.paths.reduce((acc, path) => 
-        acc + Math.pow(path.finalWealth - summary.meanFinal, 2), 0) / summary.paths.length),
-      winCount: summary.paths.filter(p => p.finalWealth > 1).length,
+      median: sorted[Math.floor(sorted.length / 2)] || 0,
+      percentile25: sorted[Math.floor(sorted.length * 0.25)] || 0,
+      percentile75: sorted[Math.floor(sorted.length * 0.75)] || 0,
+      percentile5: sorted[Math.floor(sorted.length * 0.05)] || 0,
+      percentile95: sorted[Math.floor(sorted.length * 0.95)] || 0,
+      min: Math.min(...finalWealths) || 0,
+      max: Math.max(...finalWealths) || 0,
+      std: Math.sqrt(summary.paths.reduce((acc, path) =>
+        acc + Math.pow((path.finalWealth || 0) - (summary.meanFinal || 0), 2), 0) / summary.paths.length) || 0,
+      winCount: summary.paths.filter(p => (p.finalWealth || 0) > 1).length,
       totalPaths: summary.paths.length,
     };
   };
