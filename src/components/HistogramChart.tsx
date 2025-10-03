@@ -99,7 +99,7 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
             className="dark:stroke-slate-400"
           />
           <Tooltip 
-            formatter={(value: number, name: string) => [value, '次数']}
+            formatter={(value: number) => [value, '次数']}
             labelFormatter={(label) => `资金区间: ${label}`}
             contentStyle={{
               backgroundColor: 'rgba(255, 255, 255, 0.95)',

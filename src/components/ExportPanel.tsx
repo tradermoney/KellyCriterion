@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, FileSpreadsheet, FileCode, FileText } from 'lucide-react';
+import { FileSpreadsheet, FileCode, FileText } from 'lucide-react';
 import { useSimulationStore } from "../stores/simulationStore";
 import { exportToCSV, exportToJSON, formatSimulationDataForExport, generateExportFilename } from '../utils/exportUtils';
 import type { StrategySummary } from '../types/simulation';

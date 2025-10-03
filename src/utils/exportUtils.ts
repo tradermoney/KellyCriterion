@@ -100,11 +100,11 @@ export function formatSimulationDataForExport(results: any[]): {
   const drawdowns: any[] = [];
   const statistics: any[] = [];
 
-  results.forEach((result, strategyIndex) => {
+  results.forEach((result) => {
     const strategyName = result.strategy.name;
     
     // 资金曲线数据
-    result.wealthCurve.forEach((wealth, stepIndex) => {
+    result.wealthCurve.forEach((wealth: number, stepIndex: number) => {
       wealthCurves.push({
         strategy: strategyName,
         step: stepIndex,
@@ -114,7 +114,7 @@ export function formatSimulationDataForExport(results: any[]): {
     });
 
     // 直方图数据
-    result.finalWealthDistribution.forEach((count, binIndex) => {
+    result.finalWealthDistribution.forEach((count: number, binIndex: number) => {
       histograms.push({
         strategy: strategyName,
         bin: binIndex,
@@ -124,7 +124,7 @@ export function formatSimulationDataForExport(results: any[]): {
     });
 
     // 回撤数据
-    result.drawdownCurve.forEach((drawdown, stepIndex) => {
+    result.drawdownCurve.forEach((drawdown: number, stepIndex: number) => {
       drawdowns.push({
         strategy: strategyName,
         step: stepIndex,

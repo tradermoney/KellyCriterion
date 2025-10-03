@@ -2,9 +2,8 @@ import { create } from 'zustand';
 import type { 
   SimulationConfig, 
   StrategyConfig, 
-  StrategySummary, 
-  StrategyType,
-  SimulationResult 
+  SimulationResult,
+  PathStats
 } from '../types/simulation';
 import { KellySimulator } from '../core/simulator';
 import { StatisticsCalculator } from '../core/statistics';
@@ -146,7 +145,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
     try {
       const simulator = new KellySimulator(config.seed);
-      const allResults: StrategySummary[] = [];
+      // 为每个策略累积所有路径结果
+      const allPathResults: PathStats[][] = config.strategies.map(() => []);
       
       // 分批处理
       for (let batch = 0; batch < get().totalBatches; batch++) {
@@ -165,15 +165,10 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
           batchPaths
         );
         
-        // 计算每个策略的统计摘要
-        const batchSummaries = batchResults.map((results, index) => {
-          return StatisticsCalculator.calculateStrategySummary(
-            config.strategies[index],
-            results
-          );
+        // 累积每个策略的路径结果
+        batchResults.forEach((strategyResults, strategyIndex) => {
+          allPathResults[strategyIndex].push(...strategyResults);
         });
-        
-        allResults.push(...batchSummaries);
         
         set({
           currentBatch: batch + 1,
@@ -185,8 +180,16 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       }
       
       if (!get().isPaused) {
+        // 为每个策略计算最终的统计摘要
+        const allSummaries = allPathResults.map((pathResults, index) => {
+          return StatisticsCalculator.calculateStrategySummary(
+            config.strategies[index],
+            pathResults
+          );
+        });
+        
         const result: SimulationResult = {
-          summaries: allResults,
+          summaries: allSummaries,
           config,
           timestamp: Date.now()
         };

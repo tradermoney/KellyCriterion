@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import type { BaseConfig, StrategyConfig, StrategyType, PathStats } from '../types/simulation';
+import type { BaseConfig, StrategyConfig, PathStats } from '../types/simulation';
 
 export class KellySimulator {
   private rng: seedrandom.PRNG;
@@ -109,7 +109,7 @@ export class KellySimulator {
     config: BaseConfig,
     ruinThreshold: number = 1
   ): PathStats {
-    const { initialWealth, rounds, winProb, odds, feeRate, fMax } = config;
+    const { initialWealth, rounds, winProb, odds, feeRate } = config;
     
     let wealth = initialWealth;
     let wins = 0;

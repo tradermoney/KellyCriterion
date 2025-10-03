@@ -32,7 +32,7 @@ const StrategyItem: React.FC<{
   onUpdate: (strategy: StrategyConfig) => void;
   onRemove: () => void;
   canRemove: boolean;
-}> = ({ strategy, index, onUpdate, onRemove, canRemove }) => {
+}> = ({ strategy, onUpdate, onRemove, canRemove }) => {
   const strategyOption = STRATEGY_OPTIONS.find(opt => opt.value === strategy.type);
   
   return (

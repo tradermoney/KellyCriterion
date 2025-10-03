@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ParameterPanel } from './components/ParameterPanel';
 import { ControlPanel } from './components/ControlPanel';
 import { ChartPanel } from './components/ChartPanel';
