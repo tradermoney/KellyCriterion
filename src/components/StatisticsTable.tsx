@@ -1,9 +1,49 @@
 import React from 'react';
-import type { StrategySummary } from '../types/simulation';
+import type { StrategySummary, StrategyConfig } from '../types/simulation';
 
 interface StatisticsTableProps {
   summaries: StrategySummary[];
 }
+
+// 生成策略的详细描述
+const getStrategyDescription = (strategy: StrategyConfig): { name: string; params: string } => {
+  const { type, params } = strategy;
+  
+  let name = '';
+  let paramsText = '';
+  
+  switch (type) {
+    case 'kelly':
+      name = '凯利公式';
+      paramsText = 'f = (bp - q) / b';
+      break;
+    case 'fractionalKelly':
+      name = '分数凯利';
+      paramsText = `α = ${params?.alpha || 0.25}`;
+      break;
+    case 'fixedFraction':
+      name = '固定比例';
+      paramsText = `f = ${params?.fFixed || 0.05}`;
+      break;
+    case 'fixedStake':
+      name = '固定注金';
+      paramsText = `k = ${params?.k || 5}`;
+      break;
+    case 'paroli':
+      name = 'Paroli策略';
+      paramsText = `base = ${params?.base || 1}, r = ${params?.r || 2}`;
+      break;
+    case 'martingale':
+      name = 'Martingale策略';
+      paramsText = `base = ${params?.base || 1}`;
+      break;
+    default:
+      name = type;
+      paramsText = params ? JSON.stringify(params) : '';
+  }
+  
+  return { name, params: paramsText };
+};
 
 export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) => {
   if (!summaries || summaries.length === 0) {
@@ -48,21 +88,23 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-              {summaries.map((summary, index) => (
-                <tr 
-                  key={index} 
-                  className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
-                >
-                  <td className="py-3 px-2">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                        策略{index + 1}
-                      </span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">
-                        {summary.strategy.type}
-                      </span>
-                    </div>
-                  </td>
+              {summaries.map((summary, index) => {
+                const { name, params } = getStrategyDescription(summary.strategy);
+                return (
+                  <tr 
+                    key={index} 
+                    className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                  >
+                    <td className="py-3 px-2">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                          {name}
+                        </span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                          {params}
+                        </span>
+                      </div>
+                    </td>
                   <td className="text-right py-3 px-2">
                     <span className="text-sm font-mono font-medium text-slate-800 dark:text-slate-200">
                       {summary.meanFinal.toFixed(2)}
@@ -110,21 +152,25 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
 
       {/* 移动端简化视图 */}
       <div className="md:hidden space-y-4">
-        {summaries.map((summary, index) => (
-          <div 
-            key={index}
-            className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-4 border border-slate-200 dark:border-slate-600"
-          >
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-200">
-                策略{index + 1}
-              </h3>
-              <span className="text-xs text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-600 px-2 py-1 rounded-full">
-                {summary.strategy.type}
-              </span>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3 text-sm">
+        {summaries.map((summary, index) => {
+          const { name, params } = getStrategyDescription(summary.strategy);
+          return (
+            <div 
+              key={index}
+              className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-4 border border-slate-200 dark:border-slate-600"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex flex-col">
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200">
+                    {name}
+                  </h3>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                    {params}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
                 <span className="text-slate-500 dark:text-slate-400">最终资金</span>
                 <div className="font-mono font-medium text-slate-800 dark:text-slate-200">
@@ -159,7 +205,8 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
