@@ -23,7 +23,7 @@ const detectBrowserLanguage = (): Language => {
   const browserLang = navigator.language || (navigator as { userLanguage?: string }).userLanguage;
 
   // 如果是中文相关的语言代码，返回 zh
-  if (browserLang.toLowerCase().startsWith('zh')) {
+  if (browserLang && browserLang.toLowerCase().startsWith('zh')) {
     return 'zh';
   }
   

@@ -45,8 +45,7 @@ export interface RiskReturnPoint {
  * 计算单个策略的绩效指标
  */
 export function calculatePerformanceMetrics(
-  summary: StrategySummary,
-  _rounds: number
+  summary: StrategySummary
 ): PerformanceMetrics {
   const paths = summary.paths || [];
   if (paths.length === 0) {
@@ -61,6 +60,9 @@ export function calculatePerformanceMetrics(
   const meanFinal = summary.meanFinal;
   const totalReturn = (meanFinal - 1) / 1; // 假设初始资金为1
   const annualizedReturn = Math.pow(1 + totalReturn, 1) - 1; // 简化计算
+
+  // 使用rounds参数进行年化计算（如果提供）
+  // const actualAnnualizedReturn = rounds > 0 ? Math.pow(1 + totalReturn, 365 / rounds) - 1 : annualizedReturn;
   
   // 波动率计算
   const volatility = calculateVolatility(logReturns);
@@ -124,7 +126,7 @@ export function calculateRiskReturnPoints(
   colors: string[]
 ): RiskReturnPoint[] {
   return summaries.map((summary, index) => {
-    const metrics = calculatePerformanceMetrics(summary, 100); // 假设100轮
+    const metrics = calculatePerformanceMetrics(summary); // 假设100轮
     return {
       strategy: `策略${index + 1}`,
       return: metrics.annualizedReturn,

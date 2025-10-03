@@ -25,7 +25,7 @@ export const PerformanceAnalysisTable: React.FC<PerformanceAnalysisTableProps> =
   }
 
   const performanceData = summaries.map((summary, index) => {
-    const metrics = calculatePerformanceMetrics(summary, 100);
+    const metrics = calculatePerformanceMetrics(summary);
     const strategyName = generateStrategyShortName(summary.strategy, index);
     
     return {

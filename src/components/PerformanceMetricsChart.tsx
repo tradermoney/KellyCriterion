@@ -23,7 +23,7 @@ export const PerformanceMetricsChart: React.FC<PerformanceMetricsChartProps> = (
     
     // 计算每个策略的绩效指标
     const metricsData = summaries.map((summary, index) => {
-      const metrics = calculatePerformanceMetrics(summary, 100);
+      const metrics = calculatePerformanceMetrics(summary);
       const strategyName = generateStrategyShortName(summary.strategy, index, t.strategyTypes);
       
       return {
@@ -57,7 +57,7 @@ export const PerformanceMetricsChart: React.FC<PerformanceMetricsChartProps> = (
     ];
     
     const data = indicators.map(indicator => {
-      const point: Record<string, number | ((v: number) => string)> = {
+      const point: Record<string, string | number | ((v: number) => string)> = {
         indicator: indicator.name,
         formatter: indicator.formatter
       };
@@ -123,7 +123,7 @@ export const PerformanceMetricsChart: React.FC<PerformanceMetricsChartProps> = (
             }}
           />
           <Tooltip
-            formatter={(value: number, name: string, props: { payload?: Record<string, number | ((v: number) => string)> }) => {
+            formatter={(value: number, name: string, props: { payload?: Record<string, string | number | ((v: number) => string)> }) => {
               const data = props.payload;
               const formatter = data?.formatter as (v: number) => string;
               return [formatter(value), name];
