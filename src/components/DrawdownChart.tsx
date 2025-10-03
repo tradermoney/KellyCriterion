@@ -94,7 +94,6 @@ export const DrawdownChart: React.FC<DrawdownChartProps> = ({
   
   return (
     <div className="w-full">
-      <h3 className="text-lg font-semibold mb-4 text-slate-800 dark:text-slate-200">平均回撤曲线</h3>
       <ResponsiveContainer width="100%" height={height}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:stroke-slate-600" />
