@@ -144,7 +144,8 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
                     </span>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
