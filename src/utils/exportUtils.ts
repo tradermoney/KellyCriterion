@@ -6,7 +6,7 @@
 /**
  * 将数据导出为CSV格式
  */
-export function exportToCSV(data: any[], filename: string): void {
+export function exportToCSV(data: Record<string, unknown>[], filename: string): void {
   if (!data || data.length === 0) {
     alert('没有数据可导出');
     return;
@@ -55,7 +55,7 @@ export function exportToCSV(data: any[], filename: string): void {
 /**
  * 将数据导出为JSON格式
  */
-export function exportToJSON(data: any, filename: string): void {
+export function exportToJSON(data: unknown, filename: string): void {
   if (!data) {
     alert('没有数据可导出');
     return;
@@ -87,61 +87,103 @@ export function exportToJSON(data: any, filename: string): void {
 }
 
 /**
- * 格式化仿真结果数据用于导出
+ * 格式化仿真结果数据用于导出 (StrategySummary 版本)
  */
-export function formatSimulationDataForExport(results: any[]): {
-  wealthCurves: any[];
-  histograms: any[];
-  drawdowns: any[];
-  statistics: any[];
+export function formatSimulationDataForExport(summaries: Array<{
+  strategy: { type: string; params?: Record<string, unknown> };
+  meanFinal: number;
+  medianFinal: number;
+  p5Final: number;
+  ruinRate: number;
+  meanLogFinal: number;
+  meanMDD: number;
+  paths: Array<{
+    finalWealth: number;
+    logWealth: number;
+    wins: number;
+    losses: number;
+    maxDrawdown: number;
+    ruin: boolean;
+    wealthHistory: number[];
+    betHistory: number[];
+    resultHistory: ('win' | 'loss')[];
+  }>;
+}>): {
+  wealthCurves: Record<string, unknown>[];
+  histograms: Record<string, unknown>[];
+  drawdowns: Record<string, unknown>[];
+  statistics: Record<string, unknown>[];
 } {
-  const wealthCurves: any[] = [];
-  const histograms: any[] = [];
-  const drawdowns: any[] = [];
-  const statistics: any[] = [];
+  const wealthCurves: Record<string, unknown>[] = [];
+  const histograms: Record<string, unknown>[] = [];
+  const drawdowns: Record<string, unknown>[] = [];
+  const statistics: Record<string, unknown>[] = [];
 
-  results.forEach((result) => {
-    const strategyName = result.strategy.name;
+  summaries.forEach((summary) => {
+    const strategyName = summary.strategy.type;
     
-    // 资金曲线数据
-    result.wealthCurve.forEach((wealth: number, stepIndex: number) => {
-      wealthCurves.push({
-        strategy: strategyName,
-        step: stepIndex,
-        wealth: wealth,
-        timestamp: new Date().toISOString()
+    // 从所有路径中提取资金曲线数据
+    summary.paths.forEach((path, pathIndex) => {
+      path.wealthHistory.forEach((wealth: number, stepIndex: number) => {
+        wealthCurves.push({
+          strategy: strategyName,
+          path: pathIndex,
+          step: stepIndex,
+          wealth: wealth,
+          timestamp: new Date().toISOString()
+        });
       });
     });
 
-    // 直方图数据
-    result.finalWealthDistribution.forEach((count: number, binIndex: number) => {
+    // 创建最终财富分布直方图数据
+    const finalWealths = summary.paths.map(path => path.finalWealth);
+    const minWealth = Math.min(...finalWealths);
+    const maxWealth = Math.max(...finalWealths);
+    const binCount = 20;
+    const binSize = (maxWealth - minWealth) / binCount;
+    
+    for (let i = 0; i < binCount; i++) {
+      const binStart = minWealth + i * binSize;
+      const binEnd = binStart + binSize;
+      const count = finalWealths.filter(wealth => wealth >= binStart && wealth < binEnd).length;
+      
       histograms.push({
         strategy: strategyName,
-        bin: binIndex,
+        bin: i,
+        binStart: binStart,
+        binEnd: binEnd,
         count: count,
         timestamp: new Date().toISOString()
       });
-    });
+    }
 
-    // 回撤数据
-    result.drawdownCurve.forEach((drawdown: number, stepIndex: number) => {
-      drawdowns.push({
-        strategy: strategyName,
-        step: stepIndex,
-        drawdown: drawdown,
-        timestamp: new Date().toISOString()
+    // 从所有路径中提取回撤数据
+    summary.paths.forEach((path, pathIndex) => {
+      // 计算每个步骤的回撤
+      let peak = path.wealthHistory[0];
+      path.wealthHistory.forEach((wealth: number, stepIndex: number) => {
+        if (wealth > peak) peak = wealth;
+        const drawdown = (peak - wealth) / peak;
+        
+        drawdowns.push({
+          strategy: strategyName,
+          path: pathIndex,
+          step: stepIndex,
+          drawdown: drawdown,
+          timestamp: new Date().toISOString()
+        });
       });
     });
 
     // 统计数据
     statistics.push({
       strategy: strategyName,
-      finalWealth: result.finalWealth,
-      expectedReturn: result.expectedReturn,
-      standardDeviation: result.standardDeviation,
-      sharpeRatio: result.sharpeRatio,
-      maxDrawdown: result.maxDrawdown,
-      bankruptcyProbability: result.bankruptcyProbability,
+      meanFinal: summary.meanFinal,
+      medianFinal: summary.medianFinal,
+      p5Final: summary.p5Final,
+      ruinRate: summary.ruinRate,
+      meanLogFinal: summary.meanLogFinal,
+      meanMDD: summary.meanMDD,
       timestamp: new Date().toISOString()
     });
   });

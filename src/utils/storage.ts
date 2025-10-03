@@ -9,7 +9,7 @@ const STORE_NAME = 'appState';
 
 interface StorageData {
   key: string;
-  value: any;
+  value: unknown;
   timestamp: number;
 }
 
@@ -112,7 +112,7 @@ class IndexedDBStorage {
 
         request.onsuccess = () => {
           const result = request.result as StorageData | undefined;
-          resolve(result ? result.value : null);
+          resolve(result ? (result.value as T) : null);
         };
         
         request.onerror = () => reject(request.error);

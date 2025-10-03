@@ -9,7 +9,7 @@ export interface TestResult {
   testName: string;
   success: boolean;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 export class PersistenceTester {
@@ -77,7 +77,7 @@ export class PersistenceTester {
       await storage.setItem(STORAGE_KEYS.SIMULATION_CONFIG, testConfig);
       const retrieved = await storage.getItem(STORAGE_KEYS.SIMULATION_CONFIG);
       
-      if (retrieved && (retrieved as any).initialWealth === 200) {
+      if (retrieved && typeof retrieved === 'object' && 'initialWealth' in retrieved && retrieved.initialWealth === 200) {
         this.addResult('仿真配置存储测试', true, undefined, retrieved);
       } else {
         this.addResult('仿真配置存储测试', false, '配置数据不正确');
@@ -97,7 +97,7 @@ export class PersistenceTester {
       await storage.setItem(STORAGE_KEYS.CONTROL_STATE, testState);
       const retrieved = await storage.getItem(STORAGE_KEYS.CONTROL_STATE);
       
-      if (retrieved && (retrieved as any).autoSaveResults === true) {
+      if (retrieved && typeof retrieved === 'object' && 'autoSaveResults' in retrieved && retrieved.autoSaveResults === true) {
         this.addResult('控制状态存储测试', true, undefined, retrieved);
       } else {
         this.addResult('控制状态存储测试', false, '控制状态数据不正确');
@@ -119,7 +119,7 @@ export class PersistenceTester {
       await storage.setItem(STORAGE_KEYS.EXPORT_SETTINGS, testSettings);
       const retrieved = await storage.getItem(STORAGE_KEYS.EXPORT_SETTINGS);
       
-      if (retrieved && (retrieved as any).filenamePrefix === 'test_export') {
+      if (retrieved && typeof retrieved === 'object' && 'filenamePrefix' in retrieved && retrieved.filenamePrefix === 'test_export') {
         this.addResult('导出设置存储测试', true, undefined, retrieved);
       } else {
         this.addResult('导出设置存储测试', false, '导出设置数据不正确');
@@ -149,7 +149,7 @@ export class PersistenceTester {
     }
   }
 
-  private addResult(testName: string, success: boolean, error?: string, data?: any): void {
+  private addResult(testName: string, success: boolean, error?: string, data?: unknown): void {
     this.results.push({ testName, success, error, data });
   }
 

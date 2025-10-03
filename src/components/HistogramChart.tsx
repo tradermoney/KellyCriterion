@@ -35,7 +35,7 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
       const binStart = minValue + i * binWidth;
       const binEnd = binStart + binWidth;
       
-      const bin: any = {
+      const bin: Record<string, number | string> = {
         bin: `${binStart.toFixed(1)}-${binEnd.toFixed(1)}`,
         binStart,
         binEnd

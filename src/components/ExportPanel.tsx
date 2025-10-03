@@ -81,7 +81,7 @@ export const ExportPanel: React.FC = () => {
     }
 
     try {
-      const exportData: any = {
+      const exportData: Record<string, unknown> = {
         parameters: {
           initialWealth: result.config.initialWealth,
           winProbability: result.config.winProb,

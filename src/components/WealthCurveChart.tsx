@@ -51,7 +51,7 @@ export const WealthCurveChart: React.FC<WealthCurveChartProps> = ({
     // 构建数据点
     const data = [];
     for (let i = 0; i < maxLength; i++) {
-      const point: any = { round: i + 1 };
+      const point: Record<string, number> = { round: i + 1 };
       
       summaries.forEach((summary, index) => {
         if (i < avgPaths[index].length) {

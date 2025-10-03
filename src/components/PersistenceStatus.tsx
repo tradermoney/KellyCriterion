@@ -30,7 +30,7 @@ export const PersistenceStatus: React.FC<PersistenceStatusProps> = ({ className 
         await storage.setItem(testKey, testData);
         const retrieved = await storage.getItem(testKey);
         
-        if (retrieved && (retrieved as any).test === true) {
+        if (retrieved && typeof retrieved === 'object' && 'test' in retrieved && retrieved.test === true) {
           setStatus({
             isAvailable: true,
             lastSaveTime: Date.now(),
