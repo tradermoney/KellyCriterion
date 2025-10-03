@@ -59,14 +59,6 @@ const defaultConfig: SimulationConfig = {
   strategies: [
     {
       type: 'kelly'
-    },
-    {
-      type: 'fractionalKelly',
-      params: { alpha: 0.5 }
-    },
-    {
-      type: 'fixedFraction',
-      params: { fFixed: 0.1 }
     }
   ]
 };
