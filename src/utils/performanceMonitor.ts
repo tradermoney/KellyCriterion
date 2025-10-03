@@ -5,6 +5,12 @@
 
 import React from 'react';
 
+interface PerformanceWithMemory extends Performance {
+  memory?: {
+    usedJSHeapSize: number;
+  };
+}
+
 interface PerformanceMetrics {
   timestamp: number;
   memoryUsage?: number;
@@ -12,9 +18,18 @@ interface PerformanceMetrics {
   simulationTime?: number;
 }
 
+interface GlobalThisWithProcess {
+  process?: {
+    env?: {
+      NODE_ENV?: string;
+    };
+  };
+  [key: string]: unknown;
+}
+
 class PerformanceMonitor {
   private metrics: PerformanceMetrics[] = [];
-  private enabled: boolean = process.env.NODE_ENV === 'development';
+  private enabled: boolean = (typeof globalThis !== 'undefined' && (globalThis as GlobalThisWithProcess).process?.env?.NODE_ENV === 'development');
 
   /**
    * 开始性能监控
@@ -26,10 +41,13 @@ class PerformanceMonitor {
 
     // 监控内存使用情况（如果可用）
     if ('memory' in performance) {
-      this.recordMetric({
-        timestamp: Date.now(),
-        memoryUsage: (performance as any).memory.usedJSHeapSize
-      });
+      const memory = (performance as PerformanceWithMemory).memory;
+      if (memory) {
+        this.recordMetric({
+          timestamp: Date.now(),
+          memoryUsage: memory.usedJSHeapSize
+        });
+      }
     }
   }
 
@@ -131,6 +149,7 @@ export function usePerformanceMonitor(componentName: string) {
 /**
  * 仿真性能监控包装器
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function withSimulationPerformance<T extends (...args: any[]) => any>(
   fn: T,
   name: string
