@@ -9,7 +9,7 @@ interface HistogramChartProps {
 
 export const HistogramChart: React.FC<HistogramChartProps> = ({ 
   summaries, 
-  height = 400 
+  height = 250 
 }) => {
   // 准备直方图数据
   const chartData = React.useMemo(() => {
@@ -68,7 +68,7 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
   
   if (!chartData || chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">
+      <div className="flex items-center justify-center h-[250px] text-gray-500 dark:text-gray-400">
         <div className="text-center">
           <div className="text-4xl mb-2">📊</div>
           <p className="font-medium">暂无数据</p>
@@ -80,7 +80,6 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
   
   return (
     <div className="w-full">
-      <h3 className="text-lg font-semibold mb-4 text-slate-800 dark:text-slate-200">最终资金分布直方图</h3>
       <ResponsiveContainer width="100%" height={height}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:stroke-slate-600" />
