@@ -9,7 +9,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
   if (!summaries || summaries.length === 0) {
     return (
       <div className="text-center py-8">
-        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-2xl flex items-center justify-center text-3xl">
+        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-md flex items-center justify-center text-3xl">
           📊
         </div>
         <p className="text-slate-500 dark:text-slate-400">暂无数据，请先运行仿真</p>
@@ -71,7 +71,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
                   <td className="text-right py-3 px-2">
                     <span className={`text-sm font-mono font-medium ${
                       ((summary.meanFinal / 100 - 1) * 100) > 0 
-                        ? 'text-emerald-600 dark:text-emerald-400' 
+                        ? 'text-orange-600 dark:text-orange-400' 
                         : 'text-red-600 dark:text-red-400'
                     }`}>
                       {((summary.meanFinal / 100 - 1) * 100).toFixed(2)}%
@@ -95,7 +95,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
                   <td className="text-right py-3 px-2">
                     <span className={`text-sm font-mono font-medium ${
                       summary.ruinRate === 0 
-                        ? 'text-emerald-600 dark:text-emerald-400' 
+                        ? 'text-orange-600 dark:text-orange-400' 
                         : 'text-red-600 dark:text-red-400'
                     }`}>
                       {(summary.ruinRate * 100).toFixed(2)}%
@@ -113,7 +113,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
         {summaries.map((summary, index) => (
           <div 
             key={index}
-            className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 border border-slate-200 dark:border-slate-600"
+            className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-4 border border-slate-200 dark:border-slate-600"
           >
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-slate-800 dark:text-slate-200">
@@ -135,7 +135,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
                 <span className="text-slate-500 dark:text-slate-400">期望收益</span>
                 <div className={`font-mono font-medium ${
                   ((summary.meanFinal / 100 - 1) * 100) > 0 
-                    ? 'text-emerald-600 dark:text-emerald-400' 
+                    ? 'text-orange-600 dark:text-orange-400' 
                     : 'text-red-600 dark:text-red-400'
                 }`}>
                   {((summary.meanFinal / 100 - 1) * 100).toFixed(2)}%
@@ -151,7 +151,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
                 <span className="text-slate-500 dark:text-slate-400">破产概率</span>
                 <div className={`font-mono font-medium ${
                   summary.ruinRate === 0 
-                    ? 'text-emerald-600 dark:text-emerald-400' 
+                    ? 'text-orange-600 dark:text-orange-400' 
                     : 'text-red-600 dark:text-red-400'
                 }`}>
                   {(summary.ruinRate * 100).toFixed(2)}%

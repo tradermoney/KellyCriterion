@@ -8,6 +8,7 @@ import type {
 } from '../types/simulation';
 import { KellySimulator } from '../core/simulator';
 import { StatisticsCalculator } from '../core/statistics';
+import { storage, STORAGE_KEYS } from '../utils/storage';
 
 interface SimulationState {
   // 配置
@@ -39,6 +40,10 @@ interface SimulationState {
   resetSimulation: () => void;
   
   setError: (error: string | null) => void;
+  
+  // 持久化
+  loadConfig: () => Promise<void>;
+  saveConfig: () => Promise<void>;
 }
 
 // 默认配置
@@ -81,6 +86,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     set((state) => ({
       config: { ...state.config, ...configUpdate }
     }));
+    // 保存配置到 IndexedDB
+    get().saveConfig();
   },
 
   addStrategy: (strategy) => {
@@ -90,6 +97,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         strategies: [...state.config.strategies, strategy]
       }
     }));
+    // 保存配置到 IndexedDB
+    get().saveConfig();
   },
 
   removeStrategy: (index) => {
@@ -99,6 +108,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         strategies: state.config.strategies.filter((_, i) => i !== index)
       }
     }));
+    // 保存配置到 IndexedDB
+    get().saveConfig();
   },
 
   updateStrategy: (index, strategy) => {
@@ -112,6 +123,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         }
       };
     });
+    // 保存配置到 IndexedDB
+    get().saveConfig();
   },
 
   startSimulation: async () => {
@@ -225,5 +238,27 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
   setError: (error) => {
     set({ error });
+  },
+
+  // 从 IndexedDB 加载配置
+  loadConfig: async () => {
+    try {
+      const savedConfig = await storage.getItem<SimulationConfig>(STORAGE_KEYS.SIMULATION_CONFIG);
+      if (savedConfig) {
+        set({ config: { ...defaultConfig, ...savedConfig } });
+      }
+    } catch (error) {
+      console.error('加载配置失败:', error);
+    }
+  },
+
+  // 保存配置到 IndexedDB
+  saveConfig: async () => {
+    try {
+      const { config } = get();
+      await storage.setItem(STORAGE_KEYS.SIMULATION_CONFIG, config);
+    } catch (error) {
+      console.error('保存配置失败:', error);
+    }
   }
 }));

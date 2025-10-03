@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { storage, STORAGE_KEYS } from '../utils/storage';
 
 type Theme = 'light' | 'dark';
 
@@ -19,15 +20,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   defaultTheme = 'light'
 }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // 从localStorage获取保存的主题，如果没有则使用默认主题
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || defaultTheme;
-  });
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // 初始化：从 IndexedDB 加载主题
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const savedTheme = await storage.getItem<Theme>(STORAGE_KEYS.THEME);
+        if (savedTheme) {
+          setThemeState(savedTheme);
+        }
+      } catch (error) {
+        console.error('加载主题失败:', error);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    loadTheme();
+  }, []);
 
   useEffect(() => {
-    // 将主题保存到localStorage
-    localStorage.setItem('theme', theme);
+    if (!isLoaded) return;
+
+    // 将主题保存到 IndexedDB
+    storage.setItem(STORAGE_KEYS.THEME, theme);
     
     // 更新HTML元素的class
     const root = document.documentElement;
@@ -36,10 +53,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     } else {
       root.classList.remove('dark');
     }
-  }, [theme]);
+  }, [theme, isLoaded]);
+
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+  };
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
   return (
