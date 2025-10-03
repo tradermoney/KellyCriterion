@@ -123,8 +123,16 @@ pnpm-lock.yaml
 test-routing.js
 ROUTING_COMPATIBILITY_REPORT.md
 
+# Development server logs
+dev-server.log
+*.log
+
 # Build artifacts
 *.tsbuildinfo
+
+# Development scripts
+start.sh
+test-build.sh
 
 # Runtime data
 pids
