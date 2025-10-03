@@ -3,6 +3,7 @@ import { FileSpreadsheet, FileCode, FileText } from 'lucide-react';
 import { useSimulationStore } from "../stores/simulationStore";
 import { exportToCSV, exportToJSON, formatSimulationDataForExport, generateExportFilename } from '../utils/exportUtils';
 import { storage, STORAGE_KEYS } from '../utils/storage';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { StrategySummary } from '../types/simulation';
 
 interface ExportSettings {
@@ -14,6 +15,7 @@ interface ExportSettings {
 
 export const ExportPanel: React.FC = () => {
   const { result } = useSimulationStore();
+  const { t } = useLanguage();
   const [exportSettings, setExportSettings] = useState<ExportSettings>({
     includeMetadata: true,
     includeRawData: false,
@@ -32,11 +34,11 @@ export const ExportPanel: React.FC = () => {
           setExportSettings(savedSettings);
         }
       } catch (error) {
-        console.error('加载导出设置失败:', error);
+        console.error(t.loadExportSettingsFailed, error);
       }
     };
     loadExportSettings();
-  }, []);
+  }, [t.loadExportSettingsFailed]);
 
   // 保存导出设置
   const saveExportSettings = async (newSettings: Partial<ExportSettings>) => {
@@ -45,13 +47,13 @@ export const ExportPanel: React.FC = () => {
     try {
       await storage.setItem(STORAGE_KEYS.EXPORT_SETTINGS, updatedSettings);
     } catch (error) {
-      console.error('保存导出设置失败:', error);
+      console.error(t.saveExportSettingsFailed, error);
     }
   };
 
   const handleExportCSV = () => {
     if (!result || !result.summaries || result.summaries.length === 0) {
-      alert('没有仿真结果可导出');
+      alert(t.noDataToExport);
       return;
     }
 
@@ -59,24 +61,24 @@ export const ExportPanel: React.FC = () => {
       const formattedData = formatSimulationDataForExport(result.summaries);
       
       // 导出不同类型的数据
-      exportToCSV(formattedData.wealthCurves, generateExportFilename(`${exportSettings.filenamePrefix}_wealth_curves`));
-      exportToCSV(formattedData.statistics, generateExportFilename(`${exportSettings.filenamePrefix}_statistics`));
-      exportToCSV(formattedData.histograms, generateExportFilename(`${exportSettings.filenamePrefix}_histograms`));
-      exportToCSV(formattedData.drawdowns, generateExportFilename(`${exportSettings.filenamePrefix}_drawdowns`));
+      exportToCSV(formattedData.wealthCurves, generateExportFilename(`${exportSettings.filenamePrefix}_wealth_curves`), t.noDataToExport, t.exportCSVFailed);
+      exportToCSV(formattedData.statistics, generateExportFilename(`${exportSettings.filenamePrefix}_statistics`), t.noDataToExport, t.exportCSVFailed);
+      exportToCSV(formattedData.histograms, generateExportFilename(`${exportSettings.filenamePrefix}_histograms`), t.noDataToExport, t.exportCSVFailed);
+      exportToCSV(formattedData.drawdowns, generateExportFilename(`${exportSettings.filenamePrefix}_drawdowns`), t.noDataToExport, t.exportCSVFailed);
       
       // 保存导出时间
       saveExportSettings({ lastExportTime: Date.now() });
       
-      alert('CSV文件导出成功！');
+      alert(t.exportSuccess);
     } catch (error) {
-      console.error('CSV导出失败:', error);
-      alert('CSV导出失败，请重试');
+      console.error(t.exportFailed, error);
+      alert(t.exportFailed);
     }
   };
 
   const handleExportJSON = () => {
     if (!result || !result.summaries || result.summaries.length === 0) {
-      alert('没有仿真结果可导出');
+      alert(t.noDataToExport);
       return;
     }
 
@@ -107,7 +109,7 @@ export const ExportPanel: React.FC = () => {
         exportData.metadata = {
           exportTime: new Date().toISOString(),
           version: '1.0.0',
-          description: '凯利公式仿真结果'
+          description: t.simulationResults
         };
       }
 
@@ -116,21 +118,21 @@ export const ExportPanel: React.FC = () => {
         exportData.rawData = result.summaries;
       }
 
-      exportToJSON(exportData, generateExportFilename(`${exportSettings.filenamePrefix}_results`));
+      exportToJSON(exportData, generateExportFilename(`${exportSettings.filenamePrefix}_results`), t.noDataToExport, t.exportJSONFailed);
       
       // 保存导出时间
       saveExportSettings({ lastExportTime: Date.now() });
       
-      alert('JSON文件导出成功！');
+      alert(t.exportSuccess);
     } catch (error) {
-      console.error('JSON导出失败:', error);
-      alert('JSON导出失败，请重试');
+      console.error(t.exportFailed, error);
+      alert(t.exportFailed);
     }
   };
 
   const handleExportSummary = () => {
     if (!result || !result.summaries || result.summaries.length === 0) {
-      alert('没有仿真结果可导出');
+      alert(t.noDataToExport);
       return;
     }
 
@@ -149,10 +151,10 @@ export const ExportPanel: React.FC = () => {
       // 保存导出时间
       saveExportSettings({ lastExportTime: Date.now() });
       
-      alert('报告导出成功！');
+      alert(t.exportSuccess);
     } catch (error) {
-      console.error('报告导出失败:', error);
-      alert('报告导出失败，请重试');
+      console.error(t.exportFailed, error);
+      alert(t.exportFailed);
     }
   };
 
@@ -183,7 +185,7 @@ export const ExportPanel: React.FC = () => {
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-lg p-3">
           <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
             <span className="text-base">ℹ️</span>
-            <span className="text-sm font-medium">请先运行仿真后再进行导出操作</span>
+            <span className="text-sm font-medium">{t.runSimulationFirst}</span>
           </div>
         </div>
       )}
@@ -202,7 +204,7 @@ export const ExportPanel: React.FC = () => {
           `}
         >
           <FileSpreadsheet className="w-4 h-4" />
-          <span>导出 CSV 表格</span>
+          <span>{t.exportCSV}</span>
         </button>
         
         <button
@@ -217,7 +219,7 @@ export const ExportPanel: React.FC = () => {
           `}
         >
           <FileCode className="w-4 h-4" />
-          <span>导出 JSON 数据</span>
+          <span>{t.exportJSON}</span>
         </button>
         
         <button
@@ -232,26 +234,26 @@ export const ExportPanel: React.FC = () => {
           `}
         >
           <FileText className="w-4 h-4" />
-          <span>导出摘要报告</span>
+          <span>{t.exportSummary}</span>
         </button>
       </div>
 
       {/* 导出设置 */}
       <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
-        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">导出设置</h4>
+        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">{t.exportSettings}</h4>
         
         <div className="space-y-3">
           {/* 文件名前缀 */}
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-              文件名前缀
+              {t.filenamePrefix}
             </label>
             <input
               type="text"
               value={exportSettings.filenamePrefix}
               onChange={(e) => saveExportSettings({ filenamePrefix: e.target.value })}
               className="w-full px-2 py-1 text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="kelly_simulation"
+              placeholder={t.filenamePrefixPlaceholder}
             />
           </div>
 
@@ -264,7 +266,7 @@ export const ExportPanel: React.FC = () => {
                 onChange={(e) => saveExportSettings({ includeMetadata: e.target.checked })}
                 className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
               />
-              <span className="text-xs text-slate-700 dark:text-slate-300">JSON包含元数据</span>
+              <span className="text-xs text-slate-700 dark:text-slate-300">{t.includeMetadata}</span>
             </label>
             
             <label className="flex items-center gap-2">
@@ -274,14 +276,14 @@ export const ExportPanel: React.FC = () => {
                 onChange={(e) => saveExportSettings({ includeRawData: e.target.checked })}
                 className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
               />
-              <span className="text-xs text-slate-700 dark:text-slate-300">JSON包含原始数据</span>
+              <span className="text-xs text-slate-700 dark:text-slate-300">{t.includeRawData}</span>
             </label>
           </div>
 
           {/* 上次导出时间 */}
           {exportSettings.lastExportTime && (
             <div className="text-xs text-slate-500 dark:text-slate-400">
-              上次导出: {new Date(exportSettings.lastExportTime).toLocaleString('zh-CN')}
+              {t.lastExport}: {new Date(exportSettings.lastExportTime).toLocaleString()}
             </div>
           )}
         </div>
@@ -290,11 +292,11 @@ export const ExportPanel: React.FC = () => {
       {/* 导出说明 */}
       {hasData && (
         <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
-          <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">导出说明</h4>
+          <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.exportDesc}</h4>
           <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
-            <div>• <strong>CSV 表格:</strong> 包含资金曲线、统计数据、分布直方图和回撤数据</div>
-            <div>• <strong>JSON 数据:</strong> 完整的仿真结果，包含参数和路径详情</div>
-            <div>• <strong>摘要报告:</strong> 策略对比的文字总结报告</div>
+            <div>• <strong>CSV:</strong> {t.exportDescCSV}</div>
+            <div>• <strong>JSON:</strong> {t.exportDescJSON}</div>
+            <div>• <strong>{t.exportSummary}:</strong> {t.exportDescSummary}</div>
           </div>
         </div>
       )}

@@ -192,7 +192,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     const { config, setError } = get();
     
     if (config.strategies.length === 0) {
-      setError('请至少选择一个策略');
+      setError('noStrategySelected');
       return;
     }
 
@@ -268,7 +268,7 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         get().saveControlState();
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : '仿真失败');
+      setError(error instanceof Error ? error.message : 'simulationFailed');
       set({ isRunning: false });
     }
   },

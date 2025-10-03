@@ -1,6 +1,8 @@
 import React from 'react';
 import { Play, Pause, Square, RotateCcw } from 'lucide-react';
 import { useSimulationStore } from '../stores/simulationStore';
+import { useLanguage } from '../contexts/LanguageContext';
+import { HelpTooltip } from './HelpTooltip';
 
 export const ControlPanel: React.FC = () => {
   const { 
@@ -17,6 +19,14 @@ export const ControlPanel: React.FC = () => {
     resetSimulation,
     setAutoSaveResults
   } = useSimulationStore();
+  const { t } = useLanguage();
+  
+  // 获取翻译后的错误消息
+  const getErrorMessage = (errorKey: string) => {
+    if (errorKey === 'noStrategySelected') return t.errors.noStrategySelected;
+    if (errorKey === 'simulationFailed') return t.errors.simulationFailed;
+    return errorKey; // 如果不是预定义的错误键，直接返回原文本
+  };
 
   const handleStart = async () => {
     if (isPaused) {
@@ -33,7 +43,7 @@ export const ControlPanel: React.FC = () => {
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-md p-3">
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
             <span className="text-base">⚠️</span>
-            <span className="text-sm font-medium">{error}</span>
+            <span className="text-sm font-medium">{getErrorMessage(error)}</span>
           </div>
         </div>
       )}
@@ -52,7 +62,7 @@ export const ControlPanel: React.FC = () => {
           `}
         >
           <Play size={20} />
-          {isPaused ? '继续' : '开始仿真'}
+          {isPaused ? t.continueSimulation : t.startSimulation}
         </button>
 
         <button
@@ -67,7 +77,7 @@ export const ControlPanel: React.FC = () => {
           `}
         >
           <Pause size={16} />
-          暂停
+          {t.pauseSimulation}
         </button>
 
         <button
@@ -82,7 +92,7 @@ export const ControlPanel: React.FC = () => {
           `}
         >
           <Square size={16} />
-          停止
+          {t.stopSimulation}
         </button>
 
         <button
@@ -97,7 +107,7 @@ export const ControlPanel: React.FC = () => {
           `}
         >
           <RotateCcw size={16} />
-          重置
+          {t.resetSimulation}
         </button>
       </div>
 
@@ -106,7 +116,7 @@ export const ControlPanel: React.FC = () => {
         <div className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-3 border border-slate-200 dark:border-slate-600">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              仿真进度
+              {t.simulationProgress}
             </span>
             <span className="text-sm font-bold text-orange-600 dark:text-orange-400">
               {Math.round(progress * 100)}%
@@ -126,11 +136,9 @@ export const ControlPanel: React.FC = () => {
         {/* 自动保存设置 */}
         <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700/50 rounded-md border border-slate-200 dark:border-slate-600">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              💾 自动保存结果
-            </span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              仿真完成后自动保存到本地
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
+              💾 {t.autoSaveResults}
+              <HelpTooltip content={t.help.autoSave} />
             </span>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -148,7 +156,7 @@ export const ControlPanel: React.FC = () => {
         {lastSimulationTime && (
           <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800/50">
             <span className="text-sm text-green-600 dark:text-green-400">
-              ✅ 上次仿真: {new Date(lastSimulationTime).toLocaleString('zh-CN')}
+              ✅ {t.lastSimulation}: {new Date(lastSimulationTime).toLocaleString()}
             </span>
           </div>
         )}

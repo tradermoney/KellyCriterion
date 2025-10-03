@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试标题国际化</title>
+</head>
+<body>
+    <h1>网页标题国际化测试</h1>
+    <p>当前标题：<span id="current-title"></span></p>
+    <button onclick="testTitle()">测试标题</button>
+
+    <script>
+        function testTitle() {
+            document.getElementById('current-title').textContent = document.title;
+            alert('当前网页标题: ' + document.title);
+        }
+
+        // 初始显示标题
+        window.onload = function() {
+            document.getElementById('current-title').textContent = document.title;
+        };
+    </script>
+</body>
+</html>

@@ -1,33 +1,52 @@
 import React from 'react';
-import { Globe } from 'lucide-react';
-import { getSupportedLanguages } from '../i18n';
-import type { Language } from '../contexts/LanguageContext';
+import { FormControl, Select, MenuItem } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
+import { useLanguage } from '../contexts/LanguageContext';
+import type { Language } from '../i18n/translations';
 
-interface LanguageSwitchProps {
-  currentLanguage: Language;
-  onLanguageChange: (language: Language) => void;
-}
+export const LanguageSwitch: React.FC = () => {
+  const { language, setLanguage, t } = useLanguage();
 
-export const LanguageSwitch: React.FC<LanguageSwitchProps> = ({
-  currentLanguage,
-  onLanguageChange
-}) => {
-  const languages = getSupportedLanguages();
+  const handleChange = (event: SelectChangeEvent<Language>) => {
+    setLanguage(event.target.value as Language);
+  };
 
   return (
-    <div className="flex items-center space-x-2">
-      <Globe className="h-4 w-4 text-gray-600" />
-      <select
-        value={currentLanguage}
-        onChange={(e) => onLanguageChange(e.target.value as Language)}
-        className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+    <FormControl 
+      size="small"
+      sx={{
+        minWidth: 100,
+        '& .MuiOutlinedInput-root': {
+          backgroundColor: 'transparent',
+          color: 'inherit',
+          '& fieldset': {
+            borderColor: 'rgba(148, 163, 184, 0.3)',
+          },
+          '&:hover fieldset': {
+            borderColor: 'rgba(148, 163, 184, 0.5)',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: 'rgba(59, 130, 246, 0.5)',
+          },
+        },
+        '& .MuiSelect-select': {
+          paddingTop: '8px',
+          paddingBottom: '8px',
+          fontSize: '14px',
+        },
+        '& .MuiSvgIcon-root': {
+          color: 'inherit',
+        }
+      }}
+    >
+      <Select
+        value={language}
+        onChange={handleChange}
+        aria-label={t.selectLanguage}
       >
-        {languages.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.name}
-          </option>
-        ))}
-      </select>
-    </div>
+        <MenuItem value="zh">🇨🇳 中文</MenuItem>
+        <MenuItem value="en">🇺🇸 English</MenuItem>
+      </Select>
+    </FormControl>
   );
 };

@@ -6,9 +6,9 @@
 /**
  * 将数据导出为CSV格式
  */
-export function exportToCSV(data: Record<string, unknown>[], filename: string): void {
+export function exportToCSV(data: Record<string, unknown>[], filename: string, noDataMessage: string = '没有数据可导出', exportFailedMessage: string = 'CSV导出失败，请重试'): void {
   if (!data || data.length === 0) {
-    alert('没有数据可导出');
+    alert(noDataMessage);
     return;
   }
 
@@ -48,16 +48,16 @@ export function exportToCSV(data: Record<string, unknown>[], filename: string): 
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error('CSV导出失败:', error);
-    alert('CSV导出失败，请重试');
+    alert(exportFailedMessage);
   }
 }
 
 /**
  * 将数据导出为JSON格式
  */
-export function exportToJSON(data: unknown, filename: string): void {
+export function exportToJSON(data: unknown, filename: string, noDataMessage: string = '没有数据可导出', exportFailedMessage: string = 'JSON导出失败，请重试'): void {
   if (!data) {
-    alert('没有数据可导出');
+    alert(noDataMessage);
     return;
   }
 
@@ -82,7 +82,7 @@ export function exportToJSON(data: unknown, filename: string): void {
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error('JSON导出失败:', error);
-    alert('JSON导出失败，请重试');
+    alert(exportFailedMessage);
   }
 }
 

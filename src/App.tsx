@@ -3,29 +3,26 @@ import { ParameterPanel } from './components/ParameterPanel';
 import { ControlPanel } from './components/ControlPanel';
 import { ChartPanel } from './components/ChartPanel';
 import { StatisticsTable } from './components/StatisticsTable';
+// import { PerformanceChartsPanel } from './components/PerformanceChartsPanel';
 import { ExportPanel } from './components/ExportPanel';
 import { LanguageSwitch } from './components/LanguageSwitch';
 import { ThemeSwitch } from './components/ThemeSwitch';
-import { PersistenceStatus } from './components/PersistenceStatus';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useSimulationStore } from './stores/simulationStore';
 import { motion } from 'framer-motion';
 
-// 在开发环境下导入持久化测试工具
-if (import.meta.env.DEV) {
-  import('./utils/persistenceTest');
-}
+// 持久化测试工具已移除
 
 function AppContent() {
-  const { 
-    result, 
-    loadConfig, 
-    loadControlState, 
-    loadLastResult 
+  const {
+    result,
+    loadConfig,
+    loadControlState,
+    loadLastResult
   } = useSimulationStore();
-  const { language, setLanguage, t } = useLanguage();
-  
+  const { t } = useLanguage();
+
   // 初始化：加载所有保存的数据
   useEffect(() => {
     const initializeApp = async () => {
@@ -40,9 +37,14 @@ function AppContent() {
         console.error('应用初始化失败:', error);
       }
     };
-    
+
     initializeApp();
   }, [loadConfig, loadControlState, loadLastResult]);
+
+  // 动态更新网页标题
+  useEffect(() => {
+    document.title = t.pageTitle;
+  }, [t]);
   
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-all duration-500">
@@ -73,10 +75,7 @@ function AppContent() {
                 </p>
               </div>
               <div className="flex items-center gap-4 flex-shrink-0">
-                <LanguageSwitch
-                  currentLanguage={language}
-                  onLanguageChange={setLanguage}
-                />
+                <LanguageSwitch />
                 <ThemeSwitch />
               </div>
             </div>
@@ -96,7 +95,7 @@ function AppContent() {
           <div className="bg-slate-600 text-white rounded-md p-2 shadow-lg">
             <div className="flex items-center gap-2">
               <span className="text-lg">📱</span>
-              <p className="text-sm font-medium">为了获得最佳体验效果，建议在桌面端访问此工具</p>
+              <p className="text-sm font-medium">{t.mobileWarning}</p>
             </div>
           </div>
         </motion.div>
@@ -124,28 +123,15 @@ function AppContent() {
               <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">🎮</span>
-                  仿真控制
+                  {t.simulationControl}
                 </h2>
-                <p className="text-slate-200 text-xs mt-0.5">开始仿真和实时控制</p>
+                <p className="text-slate-200 text-xs mt-0.5">{t.simulationControlDesc}</p>
               </div>
               <div className="p-2 sm:p-3">
                 <ControlPanel />
               </div>
             </div>
 
-            {/* 导出面板 */}
-            <div className="mt-2 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
-              <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📤</span>
-                  数据导出
-                </h2>
-                <p className="text-slate-200 text-xs mt-0.5">导出仿真结果和图表</p>
-              </div>
-              <div className="p-2 sm:p-3">
-                <ExportPanel />
-              </div>
-            </div>
           </motion.div>
           
           {/* 结果展示 */}
@@ -157,14 +143,14 @@ function AppContent() {
           >
             {result && result.summaries.length > 0 ? (
               <>
-                {/* 图表面板 */}
+                {/* 策略绩效分析 - 包含所有折线图 */}
                 <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
                   <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2">
                       <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📈</span>
-                      图表分析
+                      {t.performanceAnalysis}
                     </h2>
-                    <p className="text-slate-200 text-xs mt-0.5">可视化仿真结果</p>
+                    <p className="text-slate-200 text-xs mt-0.5">{t.performanceAnalysisDesc}</p>
                   </div>
                   <div className="p-2 sm:p-3">
                     <ChartPanel summaries={result.summaries} />
@@ -176,12 +162,26 @@ function AppContent() {
                   <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2">
                       <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📊</span>
-                      统计数据
+                      {t.statistics}
                     </h2>
-                    <p className="text-slate-200 text-xs mt-0.5">详细的策略对比数据</p>
+                    <p className="text-slate-200 text-xs mt-0.5">{t.statisticsDesc}</p>
                   </div>
                   <div className="p-2 sm:p-3 overflow-x-auto">
                     <StatisticsTable summaries={result.summaries} />
+                  </div>
+                </div>
+
+                {/* 导出面板 */}
+                <div className="mt-2 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+                  <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                      <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📤</span>
+                      {t.dataExport}
+                    </h2>
+                    <p className="text-slate-200 text-xs mt-0.5">{t.dataExportDesc}</p>
+                  </div>
+                  <div className="p-2 sm:p-3">
+                    <ExportPanel />
                   </div>
                 </div>
               </>
@@ -199,9 +199,9 @@ function AppContent() {
                 <div className="bg-gray-600 p-2 sm:p-3">
                   <h2 className="text-lg font-bold text-white flex items-center gap-2">
                     <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📊</span>
-                    仿真结果
+                    {t.simulationResults}
                   </h2>
-                  <p className="text-gray-200 text-xs mt-0.5">等待仿真开始</p>
+                  <p className="text-gray-200 text-xs mt-0.5">{t.waitingForSimulation}</p>
                 </div>
                 <div className="p-4 text-center">
                   <motion.div 
@@ -238,16 +238,13 @@ function AppContent() {
           </div>
         </div>
       </footer>
-
-      {/* 持久化状态指示器 */}
-      <PersistenceStatus />
     </div>
   );
 }
 
 function App() {
   return (
-    <LanguageProvider defaultLanguage="zh">
+    <LanguageProvider>
       <ThemeProvider defaultTheme="light">
         <AppContent />
       </ThemeProvider>

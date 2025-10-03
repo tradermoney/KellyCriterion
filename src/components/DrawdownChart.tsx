@@ -1,6 +1,8 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { StrategySummary } from '../types/simulation';
+import { generateHighContrastColors, generateStrategyDisplayName, generateStrategyShortName } from '../utils/chartUtils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface DrawdownChartProps {
   summaries: StrategySummary[];
@@ -11,6 +13,7 @@ export const DrawdownChart: React.FC<DrawdownChartProps> = ({
   summaries, 
   height = 400 
 }) => {
+  const { t } = useLanguage();
   // 准备回撤数据
   const chartData = React.useMemo(() => {
     if (!summaries || summaries.length === 0) return [];
@@ -59,7 +62,7 @@ export const DrawdownChart: React.FC<DrawdownChartProps> = ({
       
       summaries.forEach((summary, index) => {
         if (i < drawdownPaths[index].length) {
-          const strategyName = `策略${index + 1}: ${summary.strategy.type}`;
+          const strategyName = generateStrategyDisplayName(summary.strategy, index);
           point[strategyName] = drawdownPaths[index][i];
         }
       });
@@ -70,23 +73,16 @@ export const DrawdownChart: React.FC<DrawdownChartProps> = ({
     return data;
   }, [summaries]);
   
-  // 生成颜色
-  const colors = [
-    '#3B82F6', // blue
-    '#EF4444', // red
-    '#10B981', // green
-    '#F59E0B', // yellow
-    '#FF6B35', // orange
-    '#EC4899'  // pink
-  ];
+  // 生成高对比度颜色
+  const colors = generateHighContrastColors(summaries.length);
   
   if (!chartData || chartData.length === 0) {
     return (
       <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">
         <div className="text-center">
           <div className="text-4xl mb-2">📉</div>
-          <p className="font-medium">暂无数据</p>
-          <p className="text-sm">请先运行仿真</p>
+          <p className="font-medium">{t.noData}</p>
+          <p className="text-sm">{t.runSimulationFirst}</p>
         </div>
       </div>
     );
@@ -110,28 +106,36 @@ export const DrawdownChart: React.FC<DrawdownChartProps> = ({
             className="dark:stroke-slate-400"
           />
           <Tooltip 
-            formatter={(value: number) => [`${(value * 100).toFixed(2)}%`, '回撤']}
+            formatter={(value: number, name: string) => {
+              return [`${(value * 100).toFixed(2)}%`, name];
+            }}
             labelFormatter={(label) => `第 ${label} 轮`}
             contentStyle={{
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               border: '1px solid #e2e8f0',
               borderRadius: '8px',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              padding: '12px 16px',
+              fontSize: '14px'
+            }}
+            wrapperStyle={{
+              zIndex: 1000
             }}
           />
           <Legend />
           
           {summaries.map((summary, index) => {
-            const strategyName = `策略${index + 1}: ${summary.strategy.type}`;
+            const strategyName = generateStrategyDisplayName(summary.strategy, index);
+            const shortName = generateStrategyShortName(summary.strategy, index);
             return (
               <Line
                 key={strategyName}
                 type="monotone"
                 dataKey={strategyName}
-                stroke={colors[index % colors.length]}
+                stroke={colors[index]}
                 strokeWidth={2}
                 dot={false}
-                name={strategyName}
+                name={shortName}
               />
             );
           })}

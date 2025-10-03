@@ -1,6 +1,8 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { StrategySummary } from '../types/simulation';
+import { generateHighContrastColors, generateStrategyShortName } from '../utils/chartUtils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface HistogramChartProps {
   summaries: StrategySummary[];
@@ -11,6 +13,7 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
   summaries, 
   height = 250 
 }) => {
+  const { t } = useLanguage();
   // 准备直方图数据
   const chartData = React.useMemo(() => {
     if (!summaries || summaries.length === 0) return [];
@@ -48,7 +51,8 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
           wealth => wealth >= binStart && wealth < binEnd
         ).length;
         
-        bin[`策略${index + 1}`] = count;
+        const strategyName = generateStrategyShortName(summary.strategy, index);
+        bin[strategyName] = count;
       });
       
       bins.push(bin);
@@ -57,22 +61,16 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
     return bins;
   }, [summaries]);
   
-  const colors = [
-    '#3B82F6', // blue
-    '#EF4444', // red
-    '#10B981', // green
-    '#F59E0B', // yellow
-    '#FF6B35', // orange
-    '#EC4899'  // pink
-  ];
+  // 生成高对比度颜色
+  const colors = generateHighContrastColors(summaries.length);
   
   if (!chartData || chartData.length === 0) {
     return (
       <div className="flex items-center justify-center h-[250px] text-gray-500 dark:text-gray-400">
         <div className="text-center">
           <div className="text-4xl mb-2">📊</div>
-          <p className="font-medium">暂无数据</p>
-          <p className="text-sm">请先运行仿真</p>
+          <p className="font-medium">{t.noData}</p>
+          <p className="text-sm">{t.runSimulationFirst}</p>
         </div>
       </div>
     );
@@ -98,24 +96,31 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
             className="dark:stroke-slate-400"
           />
           <Tooltip 
-            formatter={(value: number) => [value, '次数']}
+            formatter={(value: number, name: string) => {
+              return [value, name];
+            }}
             labelFormatter={(label) => `资金区间: ${label}`}
             contentStyle={{
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               border: '1px solid #e2e8f0',
               borderRadius: '8px',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              padding: '12px 16px',
+              fontSize: '14px'
+            }}
+            wrapperStyle={{
+              zIndex: 1000
             }}
           />
           <Legend />
           
-          {summaries.map((_, index) => {
-            const strategyName = `策略${index + 1}`;
+          {summaries.map((summary, index) => {
+            const strategyName = generateStrategyShortName(summary.strategy, index);
             return (
               <Bar
                 key={strategyName}
                 dataKey={strategyName}
-                fill={colors[index % colors.length]}
+                fill={colors[index]}
                 name={strategyName}
                 opacity={0.8}
               />

@@ -1,7 +1,9 @@
 import React from 'react';
 import { ParameterSlider } from './ParameterSlider';
 import { StrategySelector } from './StrategySelector';
+import { HelpTooltip } from './HelpTooltip';
 import { useSimulationStore } from '../stores/simulationStore';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const ParameterPanel: React.FC = () => {
   const { 
@@ -12,6 +14,7 @@ export const ParameterPanel: React.FC = () => {
     updateStrategy,
     resetToDefault
   } = useSimulationStore();
+  const { t } = useLanguage();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
@@ -20,16 +23,19 @@ export const ParameterPanel: React.FC = () => {
         <div className="bg-gray-700 p-2 sm:p-3">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <span className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center text-sm">📊</span>
-            基础参数
+            {t.parameters}
           </h2>
-          <p className="text-gray-200 text-xs mt-0.5">配置仿真基础设置</p>
+          <p className="text-gray-200 text-xs mt-0.5">{t.parametersDesc}</p>
         </div>
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 p-3 sm:p-4">
           <div className="grid grid-cols-1 gap-3 sm:gap-4">
             {/* 初始资金 */}
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">初始资金</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                  {t.initialWealth}
+                  <HelpTooltip content={t.help.initialWealth} />
+                </span>
                 <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded">
                   ¥{config.initialWealth.toLocaleString()}
                 </span>
@@ -39,16 +45,19 @@ export const ParameterPanel: React.FC = () => {
                 value={config.initialWealth}
                 onChange={(e) => setConfig({ initialWealth: Number(e.target.value) })}
                 className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
-                placeholder="输入初始资金"
+                placeholder={t.inputInitialWealth}
               />
             </div>
 
             {/* 仿真次数 */}
             <div className="space-y-2">
               <label className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">仿真次数</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                  {t.paths}
+                  <HelpTooltip content={t.help.paths} />
+                </span>
                 <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded">
-                  {config.paths.toLocaleString()} 次
+                  {config.paths.toLocaleString()} {t.timesUnit}
                 </span>
               </label>
               <input
@@ -56,14 +65,14 @@ export const ParameterPanel: React.FC = () => {
                 value={config.paths}
                 onChange={(e) => setConfig({ paths: Number(e.target.value) })}
                 className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
-                placeholder="输入仿真次数"
+                placeholder={t.inputSimulationTimes}
               />
             </div>
 
             {/* 胜率 */}
             <div className="space-y-2">
               <ParameterSlider
-                label="胜率"
+                label={t.winProb}
                 value={config.winProb}
                 onChange={(value) => setConfig({ winProb: value })}
                 min={0}
@@ -71,27 +80,29 @@ export const ParameterPanel: React.FC = () => {
                 step={0.01}
                 unit="%"
                 decimals={2}
+                helpText={t.help.winProb}
               />
             </div>
 
             {/* 赔率 */}
             <div className="space-y-2">
               <ParameterSlider
-                label="赔率"
+                label={t.odds}
                 value={config.odds}
                 onChange={(value) => setConfig({ odds: value })}
                 min={0.1}
                 max={10}
                 step={0.1}
-                unit="倍"
+                unit={t.oddsUnit}
                 decimals={1}
+                helpText={t.help.odds}
               />
             </div>
 
             {/* 手续费率 */}
             <div className="space-y-2">
               <ParameterSlider
-                label="手续费率"
+                label={t.feeRate}
                 value={config.feeRate}
                 onChange={(value) => setConfig({ feeRate: value })}
                 min={0}
@@ -99,13 +110,14 @@ export const ParameterPanel: React.FC = () => {
                 step={0.001}
                 unit="%"
                 decimals={3}
+                helpText={t.help.feeRate}
               />
             </div>
 
             {/* 最大下注比例 */}
             <div className="space-y-2">
               <ParameterSlider
-                label="最大下注比例"
+                label={t.fMax}
                 value={config.fMax}
                 onChange={(value) => setConfig({ fMax: value })}
                 min={0}
@@ -113,6 +125,7 @@ export const ParameterPanel: React.FC = () => {
                 step={0.01}
                 unit="%"
                 decimals={2}
+                helpText={t.help.fMax}
               />
             </div>
           </div>
@@ -130,20 +143,20 @@ export const ParameterPanel: React.FC = () => {
               })}
               className="px-3 py-1.5 bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white text-sm font-semibold rounded-md shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1"
             >
-              🔄 重置为默认值
+              🔄 {t.resetParameters}
             </button>
           </div>
         </div>
       </div>
 
       {/* 策略选择 */}
-              <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+      <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
         <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <span className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center text-sm">🎯</span>
-            策略配置
+            {t.strategySelection}
           </h2>
-          <p className="text-slate-200 text-xs mt-0.5">选择投资策略类型</p>
+          <p className="text-slate-200 text-xs mt-0.5">{t.strategySelectionDesc}</p>
         </div>
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 p-3 sm:p-4">
           <StrategySelector 
