@@ -182,7 +182,7 @@ const StrategyItem: React.FC<{
               className="w-full px-1.5 py-0.5 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-[10px] text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
             />
           </label>
-          <div className="mt-1 px-2 py-1 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded text-xs text-red-600 dark:text-red-400">
+          <div className="mt-1 px-2 py-1 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-[10px] text-xs text-red-600 dark:text-red-400">
             {t.highRiskWarning}
           </div>
         </div>

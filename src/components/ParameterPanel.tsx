@@ -36,7 +36,7 @@ export const ParameterPanel: React.FC = () => {
                   {t.initialWealth}
                   <HelpTooltip content={t.help.initialWealth} />
                 </span>
-                <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded">
+                <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded-[10px]">
                   ¥{config.initialWealth.toLocaleString()}
                 </span>
               </label>
@@ -56,7 +56,7 @@ export const ParameterPanel: React.FC = () => {
                   {t.paths}
                   <HelpTooltip content={t.help.paths} />
                 </span>
-                <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded">
+                <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-xs font-bold rounded-[10px]">
                   {config.paths.toLocaleString()} {t.timesUnit}
                 </span>
               </label>

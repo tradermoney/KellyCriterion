@@ -97,25 +97,25 @@ export const PerformanceMonitor: React.FC = () => {
         <CardContent className="pt-0">
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-[10px]">
                 <div className="text-gray-500 dark:text-gray-400">平均仿真时间</div>
                 <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   {metrics.averageSimulationTime.toFixed(2)}ms
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-[10px]">
                 <div className="text-gray-500 dark:text-gray-400">仿真次数</div>
                 <div className="text-lg font-bold text-green-600 dark:text-green-400">
                   {metrics.totalSimulations}
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-[10px]">
                 <div className="text-gray-500 dark:text-gray-400">内存使用</div>
                 <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
                   {metrics.memoryUsage > 0 ? `${(metrics.memoryUsage / 1024 / 1024).toFixed(1)}MB` : 'N/A'}
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+              <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-[10px]">
                 <div className="text-gray-500 dark:text-gray-400">监控点</div>
                 <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                   {metrics.totalMetrics}

@@ -264,7 +264,7 @@ export const ExportPanel: React.FC = () => {
                 type="checkbox"
                 checked={exportSettings.includeMetadata}
                 onChange={(e) => saveExportSettings({ includeMetadata: e.target.checked })}
-                className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                className="rounded-[10px] border-slate-300 text-orange-600 focus:ring-orange-500"
               />
               <span className="text-xs text-slate-700 dark:text-slate-300">{t.includeMetadata}</span>
             </label>
@@ -274,7 +274,7 @@ export const ExportPanel: React.FC = () => {
                 type="checkbox"
                 checked={exportSettings.includeRawData}
                 onChange={(e) => saveExportSettings({ includeRawData: e.target.checked })}
-                className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                className="rounded-[10px] border-slate-300 text-orange-600 focus:ring-orange-500"
               />
               <span className="text-xs text-slate-700 dark:text-slate-300">{t.includeRawData}</span>
             </label>
