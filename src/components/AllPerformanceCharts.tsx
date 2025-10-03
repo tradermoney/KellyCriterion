@@ -75,7 +75,7 @@ export const AllPerformanceCharts: React.FC<AllPerformanceChartsProps> = ({ summ
           <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-800 dark:text-slate-200">
             <span className="text-2xl">📈</span>
             {chartConfig.title}
-            <HelpTooltip helpKey={chartConfig.key} />
+            <HelpTooltip helpKey={`${chartConfig.key}Chart`} />
           </h3>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">

@@ -306,6 +306,38 @@ export const translations = {
       
       // 策略卡片
       strategyCard: '策略卡片：展示已添加的策略及其参数。可以调整参数或移除策略（至少保留一个）。不同策略会在图表中用不同颜色的线条展示，方便对比表现。',
+
+      // 图表帮助信息
+      wealthCurveChart: '资金曲线：显示每个策略的平均资金随时间变化的趋势。横轴是轮次，纵轴是资金量。通过对比不同策略的资金曲线，可以直观地看出哪个策略的增长更快、更稳定。曲线越平滑说明波动越小，越陡峭说明增长越快。',
+      cumulativeReturnChart: '累计收益率：显示相对于初始资金的收益率变化。计算公式：(当前资金 - 初始资金) / 初始资金 × 100%。正值表示盈利，负值表示亏损。这个指标直观地展示了策略的盈利能力和增长趋势。',
+      wealthMultipleChart: '资金增长倍数：显示资金相对于初始资金的倍数。计算公式：当前资金 / 初始资金。例如2.0表示资金翻倍，0.5表示资金减半。这是评估策略长期增长能力的重要指标。',
+      cumulativeDrawdownChart: '累计最大回撤：显示从历史峰值到当前的最大跌幅百分比。计算公式：(峰值资金 - 当前资金) / 峰值资金 × 100%。数值越大表示回撤越严重，风险越高。理想的策略应该保持较小的回撤。',
+      rollingVolatilityChart: '波动率（滚动10轮）：显示最近10轮的收益波动程度。通过滚动窗口计算标准差，反映短期风险水平。波动率越高说明资金变化越剧烈，风险越大。投资者通常偏好低波动的稳健策略。',
+      logReturnChart: '对数收益：使用对数计算的累计收益。计算公式：ln(当前资金 / 初始资金)。对数收益更适合评估复利增长，凯利公式的目标就是最大化长期对数收益。正值表示增长，负值表示衰减。',
+      returnDrawdownRatioChart: '收益回撤比：收益率与回撤的比值，衡量单位风险的收益水平。计算公式：累计收益率 / 最大回撤。数值越高表示风险调整后收益越好，是评估策略性价比的重要指标。',
+      newHighsChart: '资金新高次数（累计）：统计资金创新高的累计次数。每当资金超过历史最高值时计数加1。频繁创新高说明策略持续向上，表现强劲。长期不创新高则说明策略可能陷入困境。',
+      relativeChangeChart: '相对初始资金变化率：显示相对于前一轮的资金变化百分比。计算公式：(当前资金 - 前一轮资金) / 前一轮资金 × 100%。正值表示增长，负值表示下降。反映资金的短期波动情况。',
+      growthRateChart: '资金增长速度：显示资金的逐轮增长率。与相对变化率类似，但更侧重于展示增长速度的时间序列变化。可以观察策略在不同阶段的表现差异。',
+      cumulativeProfitChart: '累计盈利幅度：统计所有盈利轮次的累计收益百分比。只计算盈利的部分，忽略亏损。数值越大说明盈利能力越强。与累计亏损对比可以看出盈亏平衡情况。',
+      cumulativeLossChart: '累计亏损幅度：统计所有亏损轮次的累计损失百分比。只计算亏损的部分，忽略盈利。数值越大说明亏损越严重。理想的策略应该累计盈利远大于累计亏损。',
+      relativeDrawdownChart: '相对峰值回撤：显示当前资金相对于历史峰值的回撤百分比。与累计最大回撤概念相同，但以时间序列形式展示。可以观察策略从回撤中恢复的能力。',
+      peakWealthChart: '历史峰值资金：显示到当前为止的历史最高资金水平。这条曲线只会上升或持平，不会下降。与当前资金曲线对比可以直观看出回撤情况。',
+      distanceFromPeakChart: '距离峰值差距：显示当前资金与历史峰值的绝对差距。计算公式：峰值资金 - 当前资金。数值为0表示正处于峰值，数值越大表示回撤越严重。',
+      winRateRollingChart: '盈利回合占比（滚动20轮）：显示最近20轮中盈利轮次的比例。计算公式：盈利轮次数 / 总轮次数 × 100%。反映策略的短期胜率，数值越高说明盈利频率越高。',
+      avgProfitRollingChart: '平均盈利幅度（滚动20轮）：显示最近20轮中盈利轮次的平均盈利幅度。只统计盈利的轮次，忽略亏损轮次。反映单次盈利的平均规模。',
+      avgLossRollingChart: '平均亏损幅度（滚动20轮）：显示最近20轮中亏损轮次的平均亏损幅度。只统计亏损的轮次，忽略盈利轮次。反映单次亏损的平均规模。数值越小越好。',
+      profitLossRatioRollingChart: '盈亏比（滚动20轮）：平均盈利与平均亏损的比值。计算公式：平均盈利 / 平均亏损。数值大于1表示盈利大于亏损，是评估策略质量的关键指标。',
+      sharpeRatioRollingChart: '夏普比率（滚动30轮）：风险调整后收益指标，衡量单位风险的超额收益。计算公式：平均收益 / 收益标准差。数值越高表示风险调整后表现越好，是专业投资中的核心指标。',
+      sortinoRatioRollingChart: '索提诺比率（滚动30轮）：改进版夏普比率，只考虑下行风险。计算公式：平均收益 / 下行标准差。比夏普比率更关注亏损风险，数值越高越好。',
+      calmarRatioChart: '卡尔玛比率：年化收益与最大回撤的比值。计算公式：年化收益率 / 最大回撤。衡量单位回撤风险的收益水平。数值越高说明收益回撤比越好，策略越优秀。',
+      currentWinStreakChart: '当前连续盈利次数：显示当前正在进行的连续盈利轮数。连胜时该值递增，一旦亏损就重置为0。可以观察策略的连胜模式。',
+      currentLossStreakChart: '当前连续亏损次数：显示当前正在进行的连续亏损轮数。连亏时该值递增，一旦盈利就重置为0。可以观察策略的连亏风险。',
+      maxWinStreakChart: '历史最长连胜：显示到目前为止的最长连续盈利记录。这是一个累计最大值，只会增加或保持不变。反映策略的最佳连胜能力。',
+      maxLossStreakChart: '历史最长连亏：显示到目前为止的最长连续亏损记录。这是一个累计最大值，只会增加或保持不变。反映策略的最大连亏风险。数值越小越好。',
+      recoveryIndexChart: '资金恢复力指数：衡量从回撤中恢复的能力。计算公式：1 - (当前回撤 / 峰值资金)。数值接近1表示接近峰值，接近0表示严重回撤。反映策略的韧性。',
+      var5RollingChart: '风险价值VaR 5%（滚动50轮）：统计最近50轮收益分布的5%分位数。表示在5%的最坏情况下可能面临的损失。VaR越小说明极端风险越低，是风险管理的重要工具。',
+      maxSingleProfitChart: '历史最大单轮盈利：显示到目前为止单轮最大盈利金额的累计记录。反映策略的最大单次盈利能力。这个值会随时间增加或保持，不会减少。',
+      maxSingleLossChart: '历史最大单轮亏损：显示到目前为止单轮最大亏损金额的累计记录。反映策略的最大单次亏损风险。数值越小说明单次亏损控制越好。',
     }
   },
   
@@ -615,6 +647,38 @@ export const translations = {
       
       // Strategy card
       strategyCard: 'Strategy Card: Displays added strategies and their parameters. You can adjust parameters or remove strategies (must keep at least one). Different strategies are shown with different colored lines in charts for easy performance comparison.',
+
+      // Chart help information
+      wealthCurveChart: 'Wealth Curve: Shows the average wealth trend over time for each strategy. X-axis is rounds, Y-axis is wealth amount. By comparing wealth curves of different strategies, you can intuitively see which strategy grows faster and more steadily. Smoother curves indicate lower volatility, steeper curves indicate faster growth.',
+      cumulativeReturnChart: 'Cumulative Return: Shows the return rate relative to initial wealth. Formula: (Current Wealth - Initial Wealth) / Initial Wealth × 100%. Positive values indicate profit, negative values indicate loss. This metric intuitively shows the profit-making ability and growth trend of the strategy.',
+      wealthMultipleChart: 'Wealth Growth Multiple: Shows wealth as a multiple of initial wealth. Formula: Current Wealth / Initial Wealth. For example, 2.0 means wealth doubled, 0.5 means wealth halved. This is an important metric for evaluating long-term growth capability.',
+      cumulativeDrawdownChart: 'Cumulative Maximum Drawdown: Shows the maximum decline percentage from historical peak to current. Formula: (Peak Wealth - Current Wealth) / Peak Wealth × 100%. Higher values indicate more severe drawdown and higher risk. Ideal strategies should maintain smaller drawdowns.',
+      rollingVolatilityChart: 'Rolling Volatility (10 rounds): Shows the volatility of returns over the last 10 rounds. Calculated using a rolling window to compute standard deviation, reflecting short-term risk level. Higher volatility means more dramatic wealth changes and higher risk. Investors typically prefer low-volatility stable strategies.',
+      logReturnChart: 'Log Return: Cumulative return calculated using logarithm. Formula: ln(Current Wealth / Initial Wealth). Log returns are better for evaluating compound growth. Kelly formula aims to maximize long-term log returns. Positive values indicate growth, negative values indicate decline.',
+      returnDrawdownRatioChart: 'Return/Drawdown Ratio: Ratio of return to drawdown, measuring return per unit of risk. Formula: Cumulative Return / Maximum Drawdown. Higher values indicate better risk-adjusted returns, an important metric for evaluating strategy cost-effectiveness.',
+      newHighsChart: 'New Highs Count (Cumulative): Tracks cumulative count of new wealth highs. Count increases by 1 each time wealth exceeds historical maximum. Frequent new highs indicate strong upward momentum and robust performance. Long periods without new highs suggest the strategy may be struggling.',
+      relativeChangeChart: 'Relative Change Rate: Shows percentage change in wealth relative to previous round. Formula: (Current Wealth - Previous Wealth) / Previous Wealth × 100%. Positive values indicate growth, negative values indicate decline. Reflects short-term wealth fluctuations.',
+      growthRateChart: 'Growth Rate: Shows round-by-round growth rate of wealth. Similar to relative change rate, but more focused on displaying time series changes in growth speed. Can observe strategy performance differences across different phases.',
+      cumulativeProfitChart: 'Cumulative Profit: Cumulative return percentage from all profitable rounds. Only counts profitable portions, ignoring losses. Higher values indicate stronger profit-making ability. Compare with cumulative loss to see profit-loss balance.',
+      cumulativeLossChart: 'Cumulative Loss: Cumulative loss percentage from all losing rounds. Only counts loss portions, ignoring profits. Higher values indicate more severe losses. Ideal strategies should have cumulative profit much greater than cumulative loss.',
+      relativeDrawdownChart: 'Relative Drawdown: Shows current wealth drawdown percentage relative to historical peak. Same concept as cumulative maximum drawdown, but displayed as a time series. Can observe the strategy\'s ability to recover from drawdowns.',
+      peakWealthChart: 'Peak Wealth: Shows historical maximum wealth level up to current point. This curve only rises or stays flat, never declines. Compare with current wealth curve to intuitively see drawdown situation.',
+      distanceFromPeakChart: 'Distance from Peak: Shows absolute gap between current wealth and historical peak. Formula: Peak Wealth - Current Wealth. Value of 0 means at peak, larger values indicate more severe drawdown.',
+      winRateRollingChart: 'Win Rate (Rolling 20): Shows proportion of profitable rounds in last 20 rounds. Formula: Profitable Rounds / Total Rounds × 100%. Reflects short-term win rate of strategy, higher values indicate higher profit frequency.',
+      avgProfitRollingChart: 'Average Profit (Rolling 20): Shows average profit margin from profitable rounds in last 20 rounds. Only counts profitable rounds, ignoring losing rounds. Reflects average scale of single profits.',
+      avgLossRollingChart: 'Average Loss (Rolling 20): Shows average loss margin from losing rounds in last 20 rounds. Only counts losing rounds, ignoring profitable rounds. Reflects average scale of single losses. Lower values are better.',
+      profitLossRatioRollingChart: 'Profit/Loss Ratio (Rolling 20): Ratio of average profit to average loss. Formula: Average Profit / Average Loss. Values greater than 1 indicate profit exceeds loss, a key metric for evaluating strategy quality.',
+      sharpeRatioRollingChart: 'Sharpe Ratio (Rolling 30): Risk-adjusted return metric, measuring excess return per unit of risk. Formula: Average Return / Return Standard Deviation. Higher values indicate better risk-adjusted performance, a core metric in professional investing.',
+      sortinoRatioRollingChart: 'Sortino Ratio (Rolling 30): Improved version of Sharpe ratio, considering only downside risk. Formula: Average Return / Downside Standard Deviation. More focused on loss risk than Sharpe ratio, higher values are better.',
+      calmarRatioChart: 'Calmar Ratio: Ratio of annualized return to maximum drawdown. Formula: Annualized Return / Maximum Drawdown. Measures return per unit of drawdown risk. Higher values indicate better return/drawdown ratio and superior strategy.',
+      currentWinStreakChart: 'Current Win Streak: Shows current ongoing consecutive profitable rounds. Value increases during winning streaks, resets to 0 upon loss. Can observe the strategy\'s winning streak patterns.',
+      currentLossStreakChart: 'Current Loss Streak: Shows current ongoing consecutive losing rounds. Value increases during losing streaks, resets to 0 upon profit. Can observe the strategy\'s losing streak risk.',
+      maxWinStreakChart: 'Maximum Win Streak: Shows longest consecutive profit record so far. This is a cumulative maximum, only increases or stays constant. Reflects the strategy\'s best winning streak capability.',
+      maxLossStreakChart: 'Maximum Loss Streak: Shows longest consecutive loss record so far. This is a cumulative maximum, only increases or stays constant. Reflects the strategy\'s maximum losing streak risk. Lower values are better.',
+      recoveryIndexChart: 'Recovery Index: Measures ability to recover from drawdowns. Formula: 1 - (Current Drawdown / Peak Wealth). Values close to 1 indicate near peak, close to 0 indicate severe drawdown. Reflects strategy resilience.',
+      var5RollingChart: 'VaR 5% (Rolling 50): Statistical 5th percentile of return distribution over last 50 rounds. Represents potential loss in worst 5% of cases. Lower VaR indicates lower extreme risk, an important risk management tool.',
+      maxSingleProfitChart: 'Maximum Single Round Profit: Shows cumulative record of largest single-round profit so far. Reflects strategy\'s maximum single profit capability. This value increases over time or stays constant, never decreases.',
+      maxSingleLossChart: 'Maximum Single Round Loss: Shows cumulative record of largest single-round loss so far. Reflects strategy\'s maximum single loss risk. Lower values indicate better single-loss control.',
     }
   }
 };

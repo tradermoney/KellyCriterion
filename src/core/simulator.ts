@@ -1,6 +1,5 @@
 import seedrandom from 'seedrandom';
 import type { BaseConfig, StrategyConfig, PathStats } from '../types/simulation';
-import { withSimulationPerformance } from '../utils/performanceMonitor';
 
 export class KellySimulator {
   private rng: seedrandom.PRNG;
@@ -197,13 +196,8 @@ export class KellySimulator {
         // 为每个路径创建新的随机数生成器以确保独立性
         const pathSimulator = new KellySimulator(this.rng().toString());
 
-        // 使用性能监控包装器包装仿真函数
-        const simulateWithPerformance = withSimulationPerformance(
-          pathSimulator.simulatePath.bind(pathSimulator),
-          `${strategy.type}-path-${i}`
-        );
-
-        const result = simulateWithPerformance(strategy, config);
+        // 直接调用仿真函数，不使用异步包装器
+        const result = pathSimulator.simulatePath(strategy, config);
         strategyResults.push(result);
       }
       
