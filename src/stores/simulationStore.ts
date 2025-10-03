@@ -103,34 +103,19 @@ const defaultConfig: SimulationConfig = {
         k: 15
       }
     },
-    // Paroli策略 - 保守版本
+    // Paroli策略 - 盈利时加倍下注
     {
       type: 'paroli',
       params: {
         base: 1,
-        r: 1.5
-      }
-    },
-    // Paroli策略 - 激进版本
-    {
-      type: 'paroli',
-      params: {
-        base: 2,
         r: 2
       }
     },
-    // Martingale策略 - 保守版本
+    // Martingale策略 - 亏损时加倍下注
     {
       type: 'martingale',
       params: {
         base: 1
-      }
-    },
-    // Martingale策略 - 激进版本
-    {
-      type: 'martingale',
-      params: {
-        base: 3
       }
     }
   ]
