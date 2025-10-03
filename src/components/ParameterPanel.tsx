@@ -9,7 +9,8 @@ export const ParameterPanel: React.FC = () => {
     setConfig, 
     addStrategy, 
     removeStrategy, 
-    updateStrategy 
+    updateStrategy,
+    resetToDefault
   } = useSimulationStore();
 
   return (
@@ -150,6 +151,7 @@ export const ParameterPanel: React.FC = () => {
             onAddStrategy={addStrategy}
             onRemoveStrategy={removeStrategy}
             onUpdateStrategy={updateStrategy}
+            onResetToDefault={resetToDefault}
           />
         </div>
       </div>

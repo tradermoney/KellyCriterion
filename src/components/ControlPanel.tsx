@@ -8,11 +8,14 @@ export const ControlPanel: React.FC = () => {
     isPaused, 
     progress, 
     error,
+    lastSimulationTime,
+    autoSaveResults,
     startSimulation, 
     pauseSimulation, 
     resumeSimulation, 
     stopSimulation, 
-    resetSimulation 
+    resetSimulation,
+    setAutoSaveResults
   } = useSimulationStore();
 
   const handleStart = async () => {
@@ -117,6 +120,39 @@ export const ControlPanel: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* 设置和状态信息 */}
+      <div className="space-y-2">
+        {/* 自动保存设置 */}
+        <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700/50 rounded-md border border-slate-200 dark:border-slate-600">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              💾 自动保存结果
+            </span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">
+              仿真完成后自动保存到本地
+            </span>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={autoSaveResults}
+              onChange={(e) => setAutoSaveResults(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+          </label>
+        </div>
+
+        {/* 上次仿真时间 */}
+        {lastSimulationTime && (
+          <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800/50">
+            <span className="text-sm text-green-600 dark:text-green-400">
+              ✅ 上次仿真: {new Date(lastSimulationTime).toLocaleString('zh-CN')}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

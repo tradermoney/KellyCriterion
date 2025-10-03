@@ -6,19 +6,43 @@ import { StatisticsTable } from './components/StatisticsTable';
 import { ExportPanel } from './components/ExportPanel';
 import { LanguageSwitch } from './components/LanguageSwitch';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { PersistenceStatus } from './components/PersistenceStatus';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useSimulationStore } from './stores/simulationStore';
 import { motion } from 'framer-motion';
 
+// 在开发环境下导入持久化测试工具
+if (import.meta.env.DEV) {
+  import('./utils/persistenceTest');
+}
+
 function AppContent() {
-  const { result, loadConfig } = useSimulationStore();
+  const { 
+    result, 
+    loadConfig, 
+    loadControlState, 
+    loadLastResult 
+  } = useSimulationStore();
   const { language, setLanguage, t } = useLanguage();
   
-  // 初始化：加载保存的配置
+  // 初始化：加载所有保存的数据
   useEffect(() => {
-    loadConfig();
-  }, [loadConfig]);
+    const initializeApp = async () => {
+      try {
+        // 并行加载所有持久化数据
+        await Promise.all([
+          loadConfig(),
+          loadControlState(),
+          loadLastResult()
+        ]);
+      } catch (error) {
+        console.error('应用初始化失败:', error);
+      }
+    };
+    
+    initializeApp();
+  }, [loadConfig, loadControlState, loadLastResult]);
   
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-all duration-500">
@@ -214,6 +238,9 @@ function AppContent() {
           </div>
         </div>
       </footer>
+
+      {/* 持久化状态指示器 */}
+      <PersistenceStatus />
     </div>
   );
 }

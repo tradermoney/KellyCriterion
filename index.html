@@ -8,6 +8,21 @@
     <meta name="keywords" content="凯利公式,Kelly Criterion,投资策略,资金管理,风险控制,量化投资" />
     <meta name="author" content="凯利公式优势演示器" />
     <title>凯利公式优势演示器 - 专业投资策略仿真工具</title>
+    
+    <!-- GitHub Pages SPA 路由处理 -->
+    <script>
+      // 处理 GitHub Pages 的 SPA 路由
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
   <body>
     <div id="root"></div>

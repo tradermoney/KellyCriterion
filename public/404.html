@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>凯利公式优势演示器</title>
+  <script>
+    // GitHub Pages SPA 路由处理
+    // 当用户访问不存在的路径时，重定向到主页
+    var pathSegmentsToKeep = 0;
+    
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+<body>
+  <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+    <h1>正在跳转...</h1>
+    <p>如果页面没有自动跳转，请 <a href="/KellyCriterion/">点击这里</a> 返回主页。</p>
+  </div>
+</body>
+</html>
+

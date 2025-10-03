@@ -1,13 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileSpreadsheet, FileCode, FileText } from 'lucide-react';
 import { useSimulationStore } from "../stores/simulationStore";
 import { exportToCSV, exportToJSON, formatSimulationDataForExport, generateExportFilename } from '../utils/exportUtils';
+import { storage, STORAGE_KEYS } from '../utils/storage';
 import type { StrategySummary } from '../types/simulation';
+
+interface ExportSettings {
+  includeMetadata: boolean;
+  includeRawData: boolean;
+  filenamePrefix: string;
+  lastExportTime: number | null;
+}
 
 export const ExportPanel: React.FC = () => {
   const { result } = useSimulationStore();
+  const [exportSettings, setExportSettings] = useState<ExportSettings>({
+    includeMetadata: true,
+    includeRawData: false,
+    filenamePrefix: 'kelly_simulation',
+    lastExportTime: null
+  });
 
   const hasData = result && result.summaries && result.summaries.length > 0;
+
+  // 加载导出设置
+  useEffect(() => {
+    const loadExportSettings = async () => {
+      try {
+        const savedSettings = await storage.getItem<ExportSettings>(STORAGE_KEYS.EXPORT_SETTINGS);
+        if (savedSettings) {
+          setExportSettings(savedSettings);
+        }
+      } catch (error) {
+        console.error('加载导出设置失败:', error);
+      }
+    };
+    loadExportSettings();
+  }, []);
+
+  // 保存导出设置
+  const saveExportSettings = async (newSettings: Partial<ExportSettings>) => {
+    const updatedSettings = { ...exportSettings, ...newSettings };
+    setExportSettings(updatedSettings);
+    try {
+      await storage.setItem(STORAGE_KEYS.EXPORT_SETTINGS, updatedSettings);
+    } catch (error) {
+      console.error('保存导出设置失败:', error);
+    }
+  };
 
   const handleExportCSV = () => {
     if (!result || !result.summaries || result.summaries.length === 0) {
@@ -19,10 +59,13 @@ export const ExportPanel: React.FC = () => {
       const formattedData = formatSimulationDataForExport(result.summaries);
       
       // 导出不同类型的数据
-      exportToCSV(formattedData.wealthCurves, generateExportFilename('wealth_curves'));
-      exportToCSV(formattedData.statistics, generateExportFilename('statistics'));
-      exportToCSV(formattedData.histograms, generateExportFilename('histograms'));
-      exportToCSV(formattedData.drawdowns, generateExportFilename('drawdowns'));
+      exportToCSV(formattedData.wealthCurves, generateExportFilename(`${exportSettings.filenamePrefix}_wealth_curves`));
+      exportToCSV(formattedData.statistics, generateExportFilename(`${exportSettings.filenamePrefix}_statistics`));
+      exportToCSV(formattedData.histograms, generateExportFilename(`${exportSettings.filenamePrefix}_histograms`));
+      exportToCSV(formattedData.drawdowns, generateExportFilename(`${exportSettings.filenamePrefix}_drawdowns`));
+      
+      // 保存导出时间
+      saveExportSettings({ lastExportTime: Date.now() });
       
       alert('CSV文件导出成功！');
     } catch (error) {
@@ -38,12 +81,7 @@ export const ExportPanel: React.FC = () => {
     }
 
     try {
-      const exportData = {
-        metadata: {
-          exportTime: new Date().toISOString(),
-          version: '1.0.0',
-          description: '凯利公式仿真结果'
-        },
+      const exportData: any = {
         parameters: {
           initialWealth: result.config.initialWealth,
           winProbability: result.config.winProb,
@@ -64,7 +102,25 @@ export const ExportPanel: React.FC = () => {
         }))
       };
 
-      exportToJSON(exportData, generateExportFilename('kelly_simulation_results'));
+      // 根据设置决定是否包含元数据
+      if (exportSettings.includeMetadata) {
+        exportData.metadata = {
+          exportTime: new Date().toISOString(),
+          version: '1.0.0',
+          description: '凯利公式仿真结果'
+        };
+      }
+
+      // 根据设置决定是否包含原始数据
+      if (exportSettings.includeRawData) {
+        exportData.rawData = result.summaries;
+      }
+
+      exportToJSON(exportData, generateExportFilename(`${exportSettings.filenamePrefix}_results`));
+      
+      // 保存导出时间
+      saveExportSettings({ lastExportTime: Date.now() });
+      
       alert('JSON文件导出成功！');
     } catch (error) {
       console.error('JSON导出失败:', error);
@@ -84,11 +140,14 @@ export const ExportPanel: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = generateExportFilename('summary_report.txt');
+      link.download = generateExportFilename(`${exportSettings.filenamePrefix}_summary_report.txt`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+      
+      // 保存导出时间
+      saveExportSettings({ lastExportTime: Date.now() });
       
       alert('报告导出成功！');
     } catch (error) {
@@ -175,6 +234,57 @@ export const ExportPanel: React.FC = () => {
           <FileText className="w-4 h-4" />
           <span>导出摘要报告</span>
         </button>
+      </div>
+
+      {/* 导出设置 */}
+      <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">导出设置</h4>
+        
+        <div className="space-y-3">
+          {/* 文件名前缀 */}
+          <div>
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+              文件名前缀
+            </label>
+            <input
+              type="text"
+              value={exportSettings.filenamePrefix}
+              onChange={(e) => saveExportSettings({ filenamePrefix: e.target.value })}
+              className="w-full px-2 py-1 text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              placeholder="kelly_simulation"
+            />
+          </div>
+
+          {/* JSON导出选项 */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={exportSettings.includeMetadata}
+                onChange={(e) => saveExportSettings({ includeMetadata: e.target.checked })}
+                className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+              />
+              <span className="text-xs text-slate-700 dark:text-slate-300">JSON包含元数据</span>
+            </label>
+            
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={exportSettings.includeRawData}
+                onChange={(e) => saveExportSettings({ includeRawData: e.target.checked })}
+                className="rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+              />
+              <span className="text-xs text-slate-700 dark:text-slate-300">JSON包含原始数据</span>
+            </label>
+          </div>
+
+          {/* 上次导出时间 */}
+          {exportSettings.lastExportTime && (
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              上次导出: {new Date(exportSettings.lastExportTime).toLocaleString('zh-CN')}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 导出说明 */}

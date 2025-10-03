@@ -78,7 +78,13 @@ class IndexedDBStorage {
 
         const request = store.put(data);
 
-        request.onsuccess = () => resolve();
+        request.onsuccess = () => {
+          // 触发存储变化事件
+          window.dispatchEvent(new CustomEvent('storageChange', { 
+            detail: { key, value, timestamp: Date.now() } 
+          }));
+          resolve();
+        };
         request.onerror = () => reject(request.error);
       });
     } catch (error) {
@@ -234,5 +240,9 @@ export const STORAGE_KEYS = {
   THEME: 'theme',
   LANGUAGE: 'language',
   LAST_RESULT: 'last_result',
+  CONTROL_STATE: 'control_state',
+  EXPORT_SETTINGS: 'export_settings',
+  UI_PREFERENCES: 'ui_preferences',
+  CHART_SETTINGS: 'chart_settings',
 } as const;
 

@@ -8,6 +8,7 @@ interface StrategySelectorProps {
   onAddStrategy: (strategy: StrategyConfig) => void;
   onRemoveStrategy: (index: number) => void;
   onUpdateStrategy: (index: number, strategy: StrategyConfig) => void;
+  onResetToDefault?: () => void;
 }
 
 const STRATEGY_OPTIONS: { value: StrategyType; label: string; description: string; icon: string; color: string }[] = [
@@ -124,7 +125,8 @@ export const StrategySelector: React.FC<StrategySelectorProps> = ({
   strategies, 
   onAddStrategy, 
   onRemoveStrategy, 
-  onUpdateStrategy 
+  onUpdateStrategy,
+  onResetToDefault
 }) => {
   const [selectedStrategyType, setSelectedStrategyType] = React.useState<StrategyType>('kelly');
 
@@ -175,6 +177,15 @@ export const StrategySelector: React.FC<StrategySelectorProps> = ({
           <Plus size={16} className="inline mr-1.5" />
           添加策略
         </button>
+        {onResetToDefault && (
+          <button
+            onClick={onResetToDefault}
+            className="px-4 py-2.5 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold rounded-md shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            title="恢复默认策略配置"
+          >
+            🔄
+          </button>
+        )}
       </div>
 
       {/* 策略选择提示 */}

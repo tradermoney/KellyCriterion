@@ -26,6 +26,10 @@ interface SimulationState {
   // 错误状态
   error: string | null;
   
+  // 控制状态
+  lastSimulationTime: number | null;
+  autoSaveResults: boolean;
+  
   // 动作
   setConfig: (config: Partial<SimulationConfig>) => void;
   addStrategy: (strategy: StrategyConfig) => void;
@@ -39,10 +43,16 @@ interface SimulationState {
   resetSimulation: () => void;
   
   setError: (error: string | null) => void;
+  setAutoSaveResults: (enabled: boolean) => void;
+  resetToDefault: () => void;
   
   // 持久化
   loadConfig: () => Promise<void>;
   saveConfig: () => Promise<void>;
+  loadControlState: () => Promise<void>;
+  saveControlState: () => Promise<void>;
+  loadLastResult: () => Promise<void>;
+  saveLastResult: () => Promise<void>;
 }
 
 // 默认配置
@@ -130,6 +140,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
   currentBatch: 0,
   totalBatches: 0,
   error: null,
+  lastSimulationTime: null,
+  autoSaveResults: true,
 
   setConfig: (configUpdate) => {
     set((state) => ({
@@ -247,8 +259,13 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         set({ 
           result, 
           isRunning: false, 
-          progress: 100 
+          progress: 100,
+          lastSimulationTime: Date.now()
         });
+        
+        // 自动保存结果
+        get().saveLastResult();
+        get().saveControlState();
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : '仿真失败');
@@ -293,12 +310,34 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     set({ error });
   },
 
+  setAutoSaveResults: (enabled) => {
+    set({ autoSaveResults: enabled });
+    // 保存控制状态
+    get().saveControlState();
+  },
+
+  // 重置到默认配置
+  resetToDefault: () => {
+    set({ config: { ...defaultConfig } });
+    // 保存默认配置
+    get().saveConfig();
+  },
+
   // 从 IndexedDB 加载配置
   loadConfig: async () => {
     try {
       const savedConfig = await storage.getItem<SimulationConfig>(STORAGE_KEYS.SIMULATION_CONFIG);
       if (savedConfig) {
-        set({ config: { ...defaultConfig, ...savedConfig } });
+        // 智能合并配置，确保策略数组正确合并
+        const mergedConfig: SimulationConfig = {
+          ...defaultConfig,
+          ...savedConfig,
+          // 如果保存的配置中有策略，使用保存的策略；否则使用默认策略
+          strategies: savedConfig.strategies && savedConfig.strategies.length > 0 
+            ? savedConfig.strategies 
+            : defaultConfig.strategies
+        };
+        set({ config: mergedConfig });
       }
     } catch (error) {
       console.error('加载配置失败:', error);
@@ -312,6 +351,65 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       await storage.setItem(STORAGE_KEYS.SIMULATION_CONFIG, config);
     } catch (error) {
       console.error('保存配置失败:', error);
+    }
+  },
+
+  // 加载控制状态
+  loadControlState: async () => {
+    try {
+      const savedState = await storage.getItem<{
+        lastSimulationTime: number | null;
+        autoSaveResults: boolean;
+      }>(STORAGE_KEYS.CONTROL_STATE);
+      
+      if (savedState) {
+        set({
+          lastSimulationTime: savedState.lastSimulationTime,
+          autoSaveResults: savedState.autoSaveResults
+        });
+      }
+    } catch (error) {
+      console.error('加载控制状态失败:', error);
+    }
+  },
+
+  // 保存控制状态
+  saveControlState: async () => {
+    try {
+      const { lastSimulationTime, autoSaveResults } = get();
+      await storage.setItem(STORAGE_KEYS.CONTROL_STATE, {
+        lastSimulationTime,
+        autoSaveResults
+      });
+    } catch (error) {
+      console.error('保存控制状态失败:', error);
+    }
+  },
+
+  // 加载上次结果
+  loadLastResult: async () => {
+    try {
+      const { autoSaveResults } = get();
+      if (!autoSaveResults) return;
+      
+      const savedResult = await storage.getItem<SimulationResult>(STORAGE_KEYS.LAST_RESULT);
+      if (savedResult) {
+        set({ result: savedResult });
+      }
+    } catch (error) {
+      console.error('加载上次结果失败:', error);
+    }
+  },
+
+  // 保存结果
+  saveLastResult: async () => {
+    try {
+      const { result, autoSaveResults } = get();
+      if (!autoSaveResults || !result) return;
+      
+      await storage.setItem(STORAGE_KEYS.LAST_RESULT, result);
+    } catch (error) {
+      console.error('保存结果失败:', error);
     }
   }
 }));
