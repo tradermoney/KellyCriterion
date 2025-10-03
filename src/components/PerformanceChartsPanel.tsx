@@ -34,7 +34,7 @@ export const PerformanceChartsPanel: React.FC<PerformanceChartsPanelProps> = ({ 
               {t.charts.cumulativeReturn}
             </h3>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
+          <div className="bg-white dark:bg-slate-800 rounded-[10px] border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
             <CumulativeReturnChart summaries={summaries} height={300} />
           </div>
         </div>
@@ -46,7 +46,7 @@ export const PerformanceChartsPanel: React.FC<PerformanceChartsPanelProps> = ({ 
               {t.charts.wealthMultiple}
             </h3>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
+          <div className="bg-white dark:bg-slate-800 rounded-[10px] border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
             <WealthMultipleChart summaries={summaries} height={300} />
           </div>
         </div>

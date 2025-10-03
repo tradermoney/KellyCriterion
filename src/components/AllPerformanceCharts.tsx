@@ -78,7 +78,7 @@ export const AllPerformanceCharts: React.FC<AllPerformanceChartsProps> = ({ summ
             <HelpTooltip helpKey={`${chartConfig.key}Chart`} />
           </h3>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
+        <div className="bg-white dark:bg-slate-800 rounded-[10px] border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" className="stroke-slate-200 dark:stroke-slate-700" />

@@ -182,7 +182,7 @@ export const ExportPanel: React.FC = () => {
     <div className="space-y-3">
       {/* 导出状态提示 */}
       {!hasData && (
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-lg p-3">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-[10px] p-3">
           <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
             <span className="text-base">ℹ️</span>
             <span className="text-sm font-medium">{t.runSimulationFirst}</span>
@@ -196,7 +196,7 @@ export const ExportPanel: React.FC = () => {
           onClick={handleExportCSV}
           disabled={!hasData}
           className={`
-            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-200
+            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${!hasData 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' 
               : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-md hover:shadow-green-500/30'
@@ -211,7 +211,7 @@ export const ExportPanel: React.FC = () => {
           onClick={handleExportJSON}
           disabled={!hasData}
           className={`
-            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-200
+            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${!hasData 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' 
               : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md hover:shadow-blue-500/30'
@@ -226,7 +226,7 @@ export const ExportPanel: React.FC = () => {
           onClick={handleExportSummary}
           disabled={!hasData}
           className={`
-            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-200
+            w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${!hasData 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' 
               : 'bg-gradient-to-r from-purple-500 to-violet-600 hover:from-purple-600 hover:to-violet-700 text-white shadow-md hover:shadow-purple-500/30'
@@ -239,7 +239,7 @@ export const ExportPanel: React.FC = () => {
       </div>
 
       {/* 导出设置 */}
-      <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+      <div className="bg-slate-50 dark:bg-slate-700/50 rounded-[10px] p-3 border border-slate-200 dark:border-slate-600">
         <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">{t.exportSettings}</h4>
         
         <div className="space-y-3">
@@ -252,7 +252,7 @@ export const ExportPanel: React.FC = () => {
               type="text"
               value={exportSettings.filenamePrefix}
               onChange={(e) => saveExportSettings({ filenamePrefix: e.target.value })}
-              className="w-full px-2 py-1 text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-2 py-1 text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-[10px] text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder={t.filenamePrefixPlaceholder}
             />
           </div>
@@ -291,7 +291,7 @@ export const ExportPanel: React.FC = () => {
 
       {/* 导出说明 */}
       {hasData && (
-        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-[10px] p-3 border border-slate-200 dark:border-slate-600">
           <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.exportDesc}</h4>
           <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
             <div>• <strong>CSV:</strong> {t.exportDescCSV}</div>

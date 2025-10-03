@@ -19,10 +19,10 @@ export const ParameterPanel: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
       {/* 基础参数 */}
-      <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+      <div className="bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
         <div className="bg-gray-700 p-2 sm:p-3">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <span className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center text-sm">📊</span>
+            <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">📊</span>
             {t.parameters}
           </h2>
           <p className="text-gray-200 text-xs mt-0.5">{t.parametersDesc}</p>
@@ -44,7 +44,7 @@ export const ParameterPanel: React.FC = () => {
                 type="number"
                 value={config.initialWealth}
                 onChange={(e) => setConfig({ initialWealth: Number(e.target.value) })}
-                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-[10px] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
                 placeholder={t.inputInitialWealth}
               />
             </div>
@@ -64,7 +64,7 @@ export const ParameterPanel: React.FC = () => {
                 type="number"
                 value={config.paths}
                 onChange={(e) => setConfig({ paths: Number(e.target.value) })}
-                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-[10px] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 shadow-sm"
                 placeholder={t.inputSimulationTimes}
               />
             </div>
@@ -141,7 +141,7 @@ export const ParameterPanel: React.FC = () => {
                 feeRate: 0,
                 fMax: 1
               })}
-              className="px-3 py-1.5 bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white text-sm font-semibold rounded-md shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1"
+              className="px-3 py-1.5 bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white text-sm font-semibold rounded-[10px] shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1"
             >
               🔄 {t.resetParameters}
             </button>
@@ -150,10 +150,10 @@ export const ParameterPanel: React.FC = () => {
       </div>
 
       {/* 策略选择 */}
-      <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+      <div className="bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
         <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <span className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center text-sm">🎯</span>
+            <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">🎯</span>
             {t.strategySelection}
           </h2>
           <p className="text-slate-200 text-xs mt-0.5">{t.strategySelectionDesc}</p>

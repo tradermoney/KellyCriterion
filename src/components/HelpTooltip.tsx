@@ -28,7 +28,7 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({ helpKey, content, clas
       </button>
 
       {isVisible && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg shadow-lg z-50 text-sm">
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-[10px] shadow-lg z-50 text-sm">
           <div className="text-slate-700 dark:text-slate-300 leading-relaxed">{helpText}</div>
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-white dark:border-t-slate-800"></div>
         </div>

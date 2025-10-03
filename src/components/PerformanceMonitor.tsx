@@ -68,7 +68,7 @@ export const PerformanceMonitor: React.FC = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-80 max-h-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700">
+    <div className="fixed bottom-4 right-4 z-50 w-80 max-h-96 bg-white dark:bg-gray-800 rounded-[10px] shadow-xl border border-gray-200 dark:border-gray-700">
       <Card className="border-0 shadow-none">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">

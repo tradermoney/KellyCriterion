@@ -20,7 +20,7 @@ export const ChartPanel: React.FC<ChartPanelProps> = ({ summaries }) => {
             📈 {t.charts.wealthCurve}
           </h3>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
+        <div className="bg-white dark:bg-slate-800 rounded-[10px] border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
           <div className="h-[300px] flex items-center justify-center text-gray-500 dark:text-gray-400">
             暂无数据
           </div>
@@ -40,7 +40,7 @@ export const ChartPanel: React.FC<ChartPanelProps> = ({ summaries }) => {
             <HelpTooltip helpKey="wealthCurveChart" />
           </h3>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
+        <div className="bg-white dark:bg-slate-800 rounded-[10px] border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
           <WealthCurveChart summaries={summaries} height={300} />
         </div>
       </div>

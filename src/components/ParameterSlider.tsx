@@ -30,13 +30,13 @@ export const ParameterSlider: React.FC<ParameterSliderProps> = ({
   };
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-2.5 border border-slate-200 dark:border-slate-600 transition-all hover:border-slate-300 dark:hover:border-slate-500">
+    <div className="bg-slate-50 dark:bg-slate-700/50 rounded-[10px] p-2.5 border border-slate-200 dark:border-slate-600 transition-all hover:border-slate-300 dark:hover:border-slate-500">
       <div className="flex justify-between items-center mb-1.5">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
           {label}
           {helpText && <HelpTooltip content={helpText} />}
         </label>
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-2 py-0.5 rounded-md text-xs font-semibold shadow-sm">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-2 py-0.5 rounded-[10px] text-xs font-semibold shadow-sm">
           {formatValue(value)}
         </div>
       </div>
@@ -50,7 +50,7 @@ export const ParameterSlider: React.FC<ParameterSliderProps> = ({
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
           className="
-            w-full h-1.5 bg-slate-200 dark:bg-slate-600 rounded-md appearance-none cursor-pointer
+            w-full h-1.5 bg-slate-200 dark:bg-slate-600 rounded-[10px] appearance-none cursor-pointer
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:h-4
             [&::-webkit-slider-thumb]:w-4

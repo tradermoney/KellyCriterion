@@ -55,7 +55,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
   if (!summaries || summaries.length === 0) {
     return (
       <div className="text-center py-8">
-        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-md flex items-center justify-center text-3xl">
+        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-[10px] flex items-center justify-center text-3xl">
           📊
         </div>
         <p className="text-slate-500 dark:text-slate-400">{t.noData}，{t.runSimulationFirst}</p>
@@ -358,7 +358,7 @@ export const StatisticsTable: React.FC<StatisticsTableProps> = ({ summaries }) =
           return (
             <div 
               key={index}
-              className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-4 border border-slate-200 dark:border-slate-600"
+              className="bg-slate-50 dark:bg-slate-700/50 rounded-[10px] p-4 border border-slate-200 dark:border-slate-600"
             >
               <div className="flex justify-between items-center mb-3">
                 <div className="flex flex-col">

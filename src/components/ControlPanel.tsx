@@ -40,7 +40,7 @@ export const ControlPanel: React.FC = () => {
     <div className="space-y-3">
       {/* 错误信息 */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-md p-3">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-[10px] p-3">
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
             <span className="text-base">⚠️</span>
             <span className="text-sm font-medium">{getErrorMessage(error)}</span>
@@ -54,7 +54,7 @@ export const ControlPanel: React.FC = () => {
           onClick={handleStart}
           disabled={isRunning && !isPaused}
           className={`
-            flex items-center justify-center gap-2 px-4 py-3 rounded-md font-bold text-base transition-all duration-200 transform hover:scale-105
+            flex items-center justify-center gap-2 px-4 py-3 rounded-[10px] font-bold text-base transition-all duration-200 transform hover:scale-105
             ${isRunning && !isPaused 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' 
               : 'bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white shadow-lg hover:shadow-orange-500/40 border-2 border-orange-500'
@@ -69,7 +69,7 @@ export const ControlPanel: React.FC = () => {
           onClick={pauseSimulation}
           disabled={!isRunning || isPaused}
           className={`
-            flex items-center justify-center gap-2 px-3 py-2 rounded-md font-medium text-sm transition-all duration-200
+            flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${!isRunning || isPaused
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white shadow-md hover:shadow-amber-500/40'
@@ -84,7 +84,7 @@ export const ControlPanel: React.FC = () => {
           onClick={stopSimulation}
           disabled={!isRunning}
           className={`
-            flex items-center justify-center gap-2 px-3 py-2 rounded-md font-medium text-sm transition-all duration-200
+            flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${!isRunning 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-md hover:shadow-red-500/40'
@@ -99,7 +99,7 @@ export const ControlPanel: React.FC = () => {
           onClick={resetSimulation}
           disabled={isRunning}
           className={`
-            flex items-center justify-center gap-2 px-3 py-2 rounded-md font-medium text-sm transition-all duration-200
+            flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] font-medium text-sm transition-all duration-200
             ${isRunning 
               ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white shadow-md hover:shadow-slate-500/40'
@@ -113,7 +113,7 @@ export const ControlPanel: React.FC = () => {
 
       {/* 进度条 */}
       {isRunning && (
-        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-md p-3 border border-slate-200 dark:border-slate-600">
+        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-[10px] p-3 border border-slate-200 dark:border-slate-600">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
               {t.simulationProgress}
@@ -134,7 +134,7 @@ export const ControlPanel: React.FC = () => {
       {/* 设置和状态信息 */}
       <div className="space-y-2">
         {/* 自动保存设置 */}
-        <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700/50 rounded-md border border-slate-200 dark:border-slate-600">
+        <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700/50 rounded-[10px] border border-slate-200 dark:border-slate-600">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
               💾 {t.autoSaveResults}
@@ -154,7 +154,7 @@ export const ControlPanel: React.FC = () => {
 
         {/* 上次仿真时间 */}
         {lastSimulationTime && (
-          <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800/50">
+          <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-[10px] border border-green-200 dark:border-green-800/50">
             <span className="text-sm text-green-600 dark:text-green-400">
               ✅ {t.lastSimulation}: {new Date(lastSimulationTime).toLocaleString()}
             </span>

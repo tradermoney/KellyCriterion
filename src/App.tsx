@@ -6,7 +6,6 @@ import { StatisticsTable } from './components/StatisticsTable';
 // import { PerformanceChartsPanel } from './components/PerformanceChartsPanel';
 import { ExportPanel } from './components/ExportPanel';
 import { LanguageSwitch } from './components/LanguageSwitch';
-import { ThemeSwitch } from './components/ThemeSwitch';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useSimulationStore } from './stores/simulationStore';
@@ -83,7 +82,7 @@ function AppContent() {
                   className="flex items-center gap-2"
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-md flex items-center justify-center text-white text-lg font-bold shadow-lg transform hover:rotate-12 transition-all duration-300">
+                  <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-[10px] flex items-center justify-center text-white text-lg font-bold shadow-lg transform hover:rotate-12 transition-all duration-300">
                     K
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
@@ -96,7 +95,6 @@ function AppContent() {
               </div>
               <div className="flex items-center gap-4 flex-shrink-0">
                 <LanguageSwitch />
-                <ThemeSwitch />
               </div>
             </div>
           </div>
@@ -112,7 +110,7 @@ function AppContent() {
           transition={{ delay: 0.2 }}
           className="lg:hidden mb-1"
         >
-          <div className="bg-slate-600 text-white rounded-md p-2 shadow-lg">
+          <div className="bg-slate-600 text-white rounded-[10px] p-2 shadow-lg">
             <div className="flex items-center gap-2">
               <span className="text-lg">📱</span>
               <p className="text-sm font-medium">{t.mobileWarning}</p>
@@ -139,10 +137,10 @@ function AppContent() {
             className="w-full"
           >
             {/* 控制面板 */}
-            <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+            <div className="bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
               <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">🎮</span>
+                  <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">🎮</span>
                   {t.simulationControl}
                 </h2>
                 <p className="text-slate-200 text-xs mt-0.5">{t.simulationControlDesc}</p>
@@ -164,10 +162,10 @@ function AppContent() {
             {result && result.summaries.length > 0 ? (
               <>
                 {/* 策略绩效分析 - 包含所有折线图 */}
-                <div className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
                   <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📈</span>
+                      <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">📈</span>
                       {t.performanceAnalysis}
                     </h2>
                     <p className="text-slate-200 text-xs mt-0.5">{t.performanceAnalysisDesc}</p>
@@ -178,10 +176,10 @@ function AppContent() {
                 </div>
 
                 {/* 统计表格 */}
-                <div className="mt-2 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+                <div className="mt-2 bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
                   <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📊</span>
+                      <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">📊</span>
                       {t.statistics}
                     </h2>
                     <p className="text-slate-200 text-xs mt-0.5">{t.statisticsDesc}</p>
@@ -192,10 +190,10 @@ function AppContent() {
                 </div>
 
                 {/* 导出面板 */}
-                <div className="mt-2 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
+                <div className="mt-2 bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300">
                   <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-2 sm:p-3">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📤</span>
+                      <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">📤</span>
                       {t.dataExport}
                     </h2>
                     <p className="text-slate-200 text-xs mt-0.5">{t.dataExportDesc}</p>
@@ -214,11 +212,11 @@ function AppContent() {
                   stiffness: 300,
                   damping: 20
                 }}
-                className="bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-[10px] border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden"
               >
                 <div className="bg-gray-600 p-2 sm:p-3">
                   <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                    <span className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center text-sm">📊</span>
+                    <span className="w-6 h-6 bg-white/20 rounded-[10px] flex items-center justify-center text-sm">📊</span>
                     {t.simulationResults}
                   </h2>
                   <p className="text-gray-200 text-xs mt-0.5">{t.waitingForSimulation}</p>
@@ -233,7 +231,7 @@ function AppContent() {
                       repeat: Infinity,
                       repeatType: "reverse"
                     }}
-                    className="w-16 h-16 mx-auto mb-3 bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center text-2xl shadow-lg"
+                    className="w-16 h-16 mx-auto mb-3 bg-slate-100 dark:bg-slate-800 rounded-[10px] flex items-center justify-center text-2xl shadow-lg"
                   >
                     🚀
                   </motion.div>
