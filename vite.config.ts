@@ -16,8 +16,18 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: {
+          // 将React相关库分离到vendor chunk
+          'react-vendor': ['react', 'react-dom'],
+          // 将UI库分离到ui chunk
+          'ui-vendor': ['@mui/material', '@emotion/react', '@emotion/styled'],
+          // 将图表库分离到charts chunk
+          'charts-vendor': ['recharts'],
+          // 将工具库分离到utils chunk
+          'utils-vendor': ['framer-motion', 'lucide-react', 'seedrandom', 'zustand']
+        }
       }
-    }
+    },
+    chunkSizeWarningLimit: 1000 // 增加警告限制到1MB
   }
 })

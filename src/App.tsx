@@ -11,6 +11,8 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useSimulationStore } from './stores/simulationStore';
 import { motion } from 'framer-motion';
+import { performanceMonitor } from './utils/performanceMonitor';
+import { PerformanceMonitor as PerformanceMonitorComponent } from './components/PerformanceMonitor';
 
 // 持久化测试工具已移除
 
@@ -27,18 +29,36 @@ function AppContent() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        // 启动性能监控
+        performanceMonitor.startMonitoring();
+        console.log('[Performance] 应用性能监控已启动');
+
         // 并行加载所有持久化数据
         await Promise.all([
           loadConfig(),
           loadControlState(),
           loadLastResult()
         ]);
+
+        // 记录初始化完成时间
+        const initTime = performance.now();
+        performanceMonitor.recordMetric({
+          renderTime: initTime
+        });
+        console.log('[Performance] 应用初始化完成');
       } catch (error) {
         console.error('应用初始化失败:', error);
       }
     };
 
     initializeApp();
+
+    // 清理性能监控数据
+    return () => {
+      const report = performanceMonitor.exportPerformanceData();
+      console.log('[Performance] 应用性能报告:', report);
+      performanceMonitor.clear();
+    };
   }, [loadConfig, loadControlState, loadLastResult]);
 
   // 动态更新网页标题
@@ -238,6 +258,9 @@ function AppContent() {
           </div>
         </div>
       </footer>
+
+      {/* 性能监控组件 */}
+      <PerformanceMonitorComponent />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { StrategySummary } from '../types/simulation';
 import { useLanguage } from '../contexts/LanguageContext';
+import { CumulativeReturnChart } from './CumulativeReturnChart';
+import { WealthMultipleChart } from './WealthMultipleChart';
 
 interface PerformanceChartsPanelProps {
   summaries: StrategySummary[];
@@ -34,17 +35,7 @@ export const PerformanceChartsPanel: React.FC<PerformanceChartsPanelProps> = ({ 
             </h3>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={[]} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:stroke-slate-600/30" />
-                  <XAxis dataKey="round" stroke="#666" className="dark:stroke-slate-400" />
-                  <YAxis stroke="#666" className="dark:stroke-slate-400" />
-                  <Tooltip />
-                  <Legend />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            <CumulativeReturnChart summaries={summaries} height={300} />
           </div>
         </div>
 
@@ -56,17 +47,7 @@ export const PerformanceChartsPanel: React.FC<PerformanceChartsPanelProps> = ({ 
             </h3>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 p-4 shadow-lg">
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={[]} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:stroke-slate-600/30" />
-                  <XAxis dataKey="round" stroke="#666" className="dark:stroke-slate-400" />
-                  <YAxis stroke="#666" className="dark:stroke-slate-400" />
-                  <Tooltip />
-                  <Legend />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            <WealthMultipleChart summaries={summaries} height={300} />
           </div>
         </div>
       </div>

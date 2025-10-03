@@ -1,8 +1,7 @@
+@import './styles/overrides.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/overrides.css';
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
